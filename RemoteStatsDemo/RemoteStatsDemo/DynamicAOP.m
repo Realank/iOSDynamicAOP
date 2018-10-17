@@ -123,9 +123,10 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     return returnString;
 }
 
-SEL _mappedHackName(NSString* originalSelectorName){
-    NSString* newName = [originalSelectorName stringByReplacingOccurrencesOfString:@":" withString:@""];
-    newName = [newName stringByAppendingString:@"_HackMethod"];
+SEL _mappedHackName(NSString* methodIdentifier,NSString* originalSelectorName){
+//    methodIdentifier = @"UIViewController";
+    NSString* newName = [NSString stringWithFormat:@"%@_HackMethod",originalSelectorName];
+    newName = [newName stringByReplacingOccurrencesOfString:@":" withString:@""];
     return NSSelectorFromString(newName);
 }
 
@@ -148,7 +149,7 @@ static NSInvocation* _createHakeInvocation(id self, SEL _cmd){
     {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
         [invocation setTarget:self];
-        SEL swizzledSelector = _mappedHackName(NSStringFromSelector(_cmd));
+        SEL swizzledSelector = _mappedHackName(NSStringFromClass([self class]),NSStringFromSelector(_cmd));
         [invocation setSelector:swizzledSelector];
         return invocation;
     }
@@ -158,6 +159,7 @@ static NSInvocation* _createHakeInvocation(id self, SEL _cmd){
 
 static void* _hackWrap(id self, SEL _cmd,...){
     NSLog(@"============start===============");
+    NSLog(@"--->%@",[NSString stringWithUTF8String:object_getClassName(self)]);
     NSMutableArray* infoArray = [NSMutableArray array];
     va_list args;
     NSInvocation* invocation = _createHakeInvocation(self, _cmd);
@@ -190,6 +192,7 @@ static void* _hackWrap(id self, SEL _cmd,...){
     [infoArray addObject:resultString];
     NSLog(@"===========end================");
     NSString* methodUniqueKey = [NSString stringWithFormat:@"%@-%@",NSStringFromClass([self class]),NSStringFromSelector(_cmd)];
+    
     ResultCallback callBack = methodAndBlockMapping[methodUniqueKey];
     if(callBack){
         callBack([infoArray copy]);
@@ -251,7 +254,7 @@ int dynamicAopAddMonitor(NSString* className,NSString* selectorName,ResultCallba
     }
     NSString* methodUniqueKey = [NSString stringWithFormat:@"%@-%@",className,selectorName];
     if (className.length == 0 || selectorName.length == 0) {
-        NSLog(@"不能监听方法-要监听的类名或方法名找为空 %@",methodUniqueKey);
+        NSLog(@"不能监听方法-要监听的类名或方法名为空 %@",methodUniqueKey);
         return -1;
     }
     Class clazz = NSClassFromString(className);
@@ -270,7 +273,7 @@ int dynamicAopAddMonitor(NSString* className,NSString* selectorName,ResultCallba
         NSLog(@"不能监听方法-方法参数列表不支持 %@",methodUniqueKey);
         return -1;
     }
-    SEL swizzledSelector = _mappedHackName(selectorName);
+    SEL swizzledSelector = _mappedHackName(className,selectorName);
     if (!_dynamicAopSupportThisReturnType(methodSignature)) {
         
         NSLog(@"不能监听方法-方法返回值不支持 %@",methodUniqueKey);

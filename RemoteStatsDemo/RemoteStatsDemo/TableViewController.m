@@ -23,9 +23,9 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     __weak __typeof(self) weakSelf = self;
-    dynamicAopAddMonitor(@"TableViewController", NSStringFromSelector(@selector(tableView:cellForRowAtIndexPath:)),^(NSArray* resultArray){
-        NSLog(@"=result:%@",weakSelf);
-    });
+//    dynamicAopAddMonitor(@"TableViewController", NSStringFromSelector(@selector(tableView:cellForRowAtIndexPath:)),^(NSArray* resultArray){
+//        NSLog(@"=result:%@",weakSelf);
+//    });
 }
 
 - (void)dealloc{
