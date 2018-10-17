@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #include "DynamicAOP.h"
+#import "TableViewController.h"
 
 @interface ViewController ()
 
@@ -19,9 +20,18 @@
     NSLog(@"%@ initialize in category",NSStringFromClass([self class]));
     if ([NSStringFromClass([self class]) isEqualToString:@"ViewController"]) {
         NSLog(@"Monitor %@",NSStringFromClass([self class]));
-        dynamicAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)));
-        dynamicAopAddMonitor(@"ViewController", @"viewDidAppear:");
-//        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(abc:content:num:)));
+        dynamicAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)),^(NSArray* result){
+            NSLog(@"=result:%@",result);
+        });
+        dynamicAopAddMonitor(@"ViewController", @"viewDidAppear:",^(NSArray* result){
+            NSLog(@"=result:%@",result);
+        });
+        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(abc:content:num:)),^(NSArray* result){
+            NSLog(@"=result:%@",result);
+        });
+        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(presentViewController:animated:completion:)),^(NSArray* result){
+            NSLog(@"=result:%@",result);
+        });
     }
 }
 
@@ -34,6 +44,8 @@
         } num:3];
         NSLog(@"ret %lf",ret);
         [self abc:YES content:@"content" num:34];
+        TableViewController* vc = [TableViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
     });
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -46,7 +58,7 @@
 
 
 - (int)abc:(BOOL)is content:(NSString*)content num:(int)num{
-    NSLog(@"abc %@ %d %@ %d",NSStringFromSelector(_cmd),is,content,num);
+    NSLog(@"== abc %@ %d %@ %d",NSStringFromSelector(_cmd),is,content,num);
     return 314743647;
 }
 
