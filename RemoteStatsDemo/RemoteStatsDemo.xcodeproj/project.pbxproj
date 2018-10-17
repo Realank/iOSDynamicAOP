@@ -13,7 +13,6 @@
 		8CE7843221748B9C00726241 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7843121748B9C00726241 /* Assets.xcassets */; };
 		8CE7843521748B9C00726241 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7843321748B9C00726241 /* LaunchScreen.storyboard */; };
 		8CE7843821748B9C00726241 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7843721748B9C00726241 /* main.m */; };
-		8CE784452176CEE500726241 /* UIViewController+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE784442176CEE500726241 /* UIViewController+AOP.m */; };
 		8CE784472176DD4100726241 /* UCARDynamicAOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE784462176DD4100726241 /* UCARDynamicAOP.m */; };
 /* End PBXBuildFile section */
 
@@ -28,8 +27,6 @@
 		8CE7843421748B9C00726241 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8CE7843621748B9C00726241 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CE7843721748B9C00726241 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8CE784432176CEE500726241 /* UIViewController+AOP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AOP.h"; sourceTree = "<group>"; };
-		8CE784442176CEE500726241 /* UIViewController+AOP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AOP.m"; sourceTree = "<group>"; };
 		8CE784462176DD4100726241 /* UCARDynamicAOP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UCARDynamicAOP.m; sourceTree = "<group>"; };
 		8CE784482176DD5600726241 /* UCARDynamicAOP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UCARDynamicAOP.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,8 +66,6 @@
 				8CE7842B21748B9B00726241 /* ViewController.h */,
 				8CE7842C21748B9B00726241 /* ViewController.m */,
 				8CE7842E21748B9B00726241 /* Main.storyboard */,
-				8CE784432176CEE500726241 /* UIViewController+AOP.h */,
-				8CE784442176CEE500726241 /* UIViewController+AOP.m */,
 				8CE784482176DD5600726241 /* UCARDynamicAOP.h */,
 				8CE784462176DD4100726241 /* UCARDynamicAOP.m */,
 				8CE7843121748B9C00726241 /* Assets.xcassets */,
@@ -152,7 +147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CE7842D21748B9B00726241 /* ViewController.m in Sources */,
-				8CE784452176CEE500726241 /* UIViewController+AOP.m in Sources */,
 				8CE7843821748B9C00726241 /* main.m in Sources */,
 				8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */,
 				8CE784472176DD4100726241 /* UCARDynamicAOP.m in Sources */,

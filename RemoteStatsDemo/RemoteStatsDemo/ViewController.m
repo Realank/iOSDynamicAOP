@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "UIViewController+AOP.h"
+#include "UCARDynamicAOP.h"
 
 @interface ViewController ()
 
@@ -15,6 +15,13 @@
 
 @implementation ViewController
 
++ (void)initialize{
+    NSLog(@"%@ initialize in category",NSStringFromClass([self class]));
+    if ([NSStringFromClass([self class]) isEqualToString:@"ViewController"]) {
+        NSLog(@"Monitor %@",NSStringFromClass([self class]));
+        ucarAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)));
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
