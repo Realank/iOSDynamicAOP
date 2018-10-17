@@ -1,5 +1,5 @@
 //
-//  UCARDynamicAOP.m
+//  DynamicAOP.m
 //  RemoteStatsDemo
 //
 //  Created by Realank on 2018/10/17.
@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#include "UCARDynamicAOP.h"
+#include "DynamicAOP.h"
 #import <objc/runtime.h>
 
-static BOOL _ucarAopSupportThisReturnType(NSMethodSignature* signature){
+static BOOL _dynamicAopSupportThisReturnType(NSMethodSignature* signature){
     if (!signature) {
         return NO;
     }
@@ -20,7 +20,7 @@ static BOOL _ucarAopSupportThisReturnType(NSMethodSignature* signature){
     }
     return [@"ilILB@v" containsString:returnType];
 }
-static BOOL _ucarAopSupportThisArgumentType(NSString* argumentType){
+static BOOL _dynamicAopSupportThisArgumentType(NSString* argumentType){
     if([argumentType isEqualToString:@"@?"]){
         //block
         return YES;
@@ -30,19 +30,19 @@ static BOOL _ucarAopSupportThisArgumentType(NSString* argumentType){
     }
     return [@"ilILBd@" containsString:argumentType];
 }
-static BOOL _ucarAopSupportTheseArguments(NSMethodSignature* signature){
+static BOOL _dynamicAopSupportTheseArguments(NSMethodSignature* signature){
     if (!signature) {
         return NO;
     }
     for (int i = 2; i < signature.numberOfArguments; i++) {
-        if (!_ucarAopSupportThisArgumentType([NSString stringWithUTF8String:[signature getArgumentTypeAtIndex:i]])) {
+        if (!_dynamicAopSupportThisArgumentType([NSString stringWithUTF8String:[signature getArgumentTypeAtIndex:i]])) {
             return NO;
         }
     }
     return YES;
 }
 
-void _ucarAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
+void _dynamicAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
 {
     
     Method originalMethod = class_getInstanceMethod(clazz, origSelector);
@@ -62,31 +62,47 @@ void _ucarAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
     }
 }
 
-static void _ucarAopPutArgument(NSInvocation* invocation,NSString* argumentType,va_list args,int atIndex){
+static void _dynamicAopPutArgument(NSInvocation* invocation,NSString* argumentType,va_list args,int atIndex){
     if ([argumentType isEqualToString:@"i"] || [argumentType isEqualToString:@"I"] ) {
         int argument = va_arg(args, int);
-        NSLog(@"param: %d",argument);
+        NSLog(@"param:(int)%d",argument);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"l"] || [argumentType isEqualToString:@"L"] ) {
         long argument = va_arg(args, long);
-        NSLog(@"param: %ld",argument);
+        NSLog(@"param:(long)%ld",argument);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"B"]) {
         BOOL argument = va_arg(args, int) != 0;
-        NSLog(@"param: %@",argument ? @"YES":@"NO");
+        NSLog(@"param:(BOOL)%@",argument ? @"YES":@"NO");
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"d"]) {
         double argument = va_arg(args, double);
-        NSLog(@"param: %lf",argument);
+        NSLog(@"param:(double)%lf",argument);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"@"]) {
         id argument = va_arg(args, id);
-        NSLog(@"param: %@",argument);
+        NSLog(@"param:(Class)%@",argument);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"@?"]) {
         id argument = va_arg(args, id);
-        NSLog(@"param: %@",argument);
+        NSLog(@"param:(block)%@",argument);
         [invocation setArgument:&argument atIndex:atIndex];
+    }
+}
+
+static void _printReturnValue(void* returnValue,NSString* returnType){
+    //ilILB@v
+    if (returnType.length == 1 && [@"ilILB" containsString:returnType]) {
+        NSLog(@"return:(%@)%ld",returnType,(long)returnValue);
+    }else if ([returnType isEqualToString:@"B"]){
+        NSLog(@"return:(BOOL)%d",(BOOL)returnValue);
+    }else if ([returnType isEqualToString:@"@"]){
+        id obj = (__bridge id) returnValue;
+        NSLog(@"return:(Object)%@",obj);
+    }else if ([returnType isEqualToString:@"v"]){
+        NSLog(@"return:(void)");
+    }else{
+        NSLog(@"return:(%@)unknown",returnType);
     }
 }
 
@@ -96,13 +112,15 @@ static void* _hackWrap(id self, SEL _cmd,...){
     if (!method) {
         return 0;
     }
-    NSLog(@"hacking in %@ method %@",NSStringFromSelector(_cmd),[NSString stringWithUTF8String:method_getTypeEncoding(method)]);
+    NSLog(@"============start===============");
+    NSLog(@"hacking %@-%@ signature %@",NSStringFromClass([self class]),NSStringFromSelector(_cmd),[NSString stringWithUTF8String:method_getTypeEncoding(method)]);
     va_list args;
     
     NSMethodSignature *methodSignature = [[self class] instanceMethodSignatureForSelector:_cmd];
     if(methodSignature == nil)
     {
         NSLog(@"没有这个方法，或者方法名字错误");
+        NSLog(@"===========end================");
         //        @throw [NSException exceptionWithName:@"抛异常错误" reason:@"没有这个方法，或者方法名字错误" userInfo:nil];
         return 0;
     }
@@ -118,7 +136,7 @@ static void* _hackWrap(id self, SEL _cmd,...){
             NSUInteger argumentCount = methodSignature.numberOfArguments;
             for (int i = 2; i < argumentCount; i++) {
                 NSString* argumentType = [NSString stringWithUTF8String:[methodSignature getArgumentTypeAtIndex:i]];
-                _ucarAopPutArgument(invocation, argumentType, args, i);
+                _dynamicAopPutArgument(invocation, argumentType, args, i);
             }
             
         }
@@ -130,6 +148,8 @@ static void* _hackWrap(id self, SEL _cmd,...){
         {
             [invocation getReturnValue:&callBackObject];
         }
+        _printReturnValue(callBackObject, [NSString stringWithUTF8String:methodSignature.methodReturnType]);
+        NSLog(@"===========end================");
         return callBackObject;
     }
     
@@ -140,13 +160,15 @@ static double _hackWrapDouble(id self, SEL _cmd,...){
     if (!method) {
         return 0;
     }
-    NSLog(@"hacking in %@ method %@",NSStringFromSelector(_cmd),[NSString stringWithUTF8String:method_getTypeEncoding(method)]);
+    NSLog(@"============start===============");
+    NSLog(@"hacking %@-%@ signature %@",NSStringFromClass([self class]),NSStringFromSelector(_cmd),[NSString stringWithUTF8String:method_getTypeEncoding(method)]);
     va_list args;
     
     NSMethodSignature *methodSignature = [[self class] instanceMethodSignatureForSelector:_cmd];
     if(methodSignature == nil)
     {
         NSLog(@"没有这个方法，或者方法名字错误");
+        NSLog(@"===========end================");
         //        @throw [NSException exceptionWithName:@"抛异常错误" reason:@"没有这个方法，或者方法名字错误" userInfo:nil];
         return 0;
     }
@@ -162,7 +184,7 @@ static double _hackWrapDouble(id self, SEL _cmd,...){
             NSUInteger argumentCount = methodSignature.numberOfArguments;
             for (int i = 2; i < argumentCount; i++) {
                 NSString* argumentType = [NSString stringWithUTF8String:[methodSignature getArgumentTypeAtIndex:i]];
-                _ucarAopPutArgument(invocation, argumentType, args, i);
+                _dynamicAopPutArgument(invocation, argumentType, args, i);
             }
             
         }
@@ -174,6 +196,8 @@ static double _hackWrapDouble(id self, SEL _cmd,...){
         {
             [invocation getReturnValue:&callBackObject];
         }
+        NSLog(@"return:(double)%lf",callBackObject);
+        NSLog(@"===========end================");
         return callBackObject;
     }
     
@@ -182,7 +206,7 @@ static double _hackWrapDouble(id self, SEL _cmd,...){
 
 
 
-void ucarAopAddMonitor(NSString* className,NSString* selectorName){
+void dynamicAopAddMonitor(NSString* className,NSString* selectorName){
     if (className.length == 0 || selectorName.length == 0) {
         NSLog(@"不能监听方法-要监听的类名或方法名找为空 %@",selectorName);
         return;
@@ -199,11 +223,11 @@ void ucarAopAddMonitor(NSString* className,NSString* selectorName){
         return;
     }
     NSMethodSignature *methodSignature = [clazz instanceMethodSignatureForSelector:selector];
-    if (!_ucarAopSupportTheseArguments(methodSignature)) {
+    if (!_dynamicAopSupportTheseArguments(methodSignature)) {
         NSLog(@"不能监听方法-方法参数列表不支持 %@",selectorName);
         return;
     }
-    if (!_ucarAopSupportThisReturnType(methodSignature)) {
+    if (!_dynamicAopSupportThisReturnType(methodSignature)) {
         
         if ([[NSString stringWithUTF8String:methodSignature.methodReturnType] isEqualToString:@"d"]) {
             //返回值是double类型的方法
@@ -213,7 +237,7 @@ void ucarAopAddMonitor(NSString* className,NSString* selectorName){
                 return;
             }
             //可以监听double
-            _ucarAopSwizzleMethod(clazz, selector, @selector(_hackWrapDouble));
+            _dynamicAopSwizzleMethod(clazz, selector, @selector(_hackWrapDouble));
         }else{
             NSLog(@"不能监听方法-方法返回值不支持 %@",selectorName);
             
@@ -226,6 +250,6 @@ void ucarAopAddMonitor(NSString* className,NSString* selectorName){
         NSLog(@"不能监听方法-添加监听方法失败 %@",selectorName);
         return;
     }
-    _ucarAopSwizzleMethod(clazz, selector, @selector(_hackWrap));
+    _dynamicAopSwizzleMethod(clazz, selector, @selector(_hackWrap));
 }
 

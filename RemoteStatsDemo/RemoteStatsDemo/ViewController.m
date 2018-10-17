@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#include "UCARDynamicAOP.h"
+#include "DynamicAOP.h"
 
 @interface ViewController ()
 
@@ -19,7 +19,9 @@
     NSLog(@"%@ initialize in category",NSStringFromClass([self class]));
     if ([NSStringFromClass([self class]) isEqualToString:@"ViewController"]) {
         NSLog(@"Monitor %@",NSStringFromClass([self class]));
-        ucarAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)));
+        dynamicAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)));
+        dynamicAopAddMonitor(@"ViewController", @"viewDidAppear:");
+//        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(abc:content:num:)));
     }
 }
 
@@ -31,6 +33,7 @@
             NSLog(@"block int %d %@",i,aa);
         } num:3];
         NSLog(@"ret %lf",ret);
+        [self abc:YES content:@"content" num:34];
     });
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -38,7 +41,7 @@
 - (void)viewDidAppear:(BOOL)animated{
 //    NSLog(@"viewDidAppear");
     [super viewDidAppear:animated];
-    NSLog(@"viewDidAppear %@ %d",NSStringFromSelector(_cmd),animated);
+    NSLog(@"== viewDidAppear %@ %d",NSStringFromSelector(_cmd),animated);
 }
 
 
@@ -48,7 +51,7 @@
 }
 
 - (double)def:(void(^)(int i,NSString* a))is num:(int)num{
-    NSLog(@"def %@ %d",NSStringFromSelector(_cmd),num);
+    NSLog(@"== def %@ %d",NSStringFromSelector(_cmd),num);
     is(883,@"dddd");
     return 0.2355657;
 }
