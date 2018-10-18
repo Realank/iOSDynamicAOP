@@ -46,10 +46,10 @@ static BOOL _dynamicAopSupportTheseArguments(NSMethodSignature* signature){
 
 void _dynamicAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
 {
-    
+
     Method originalMethod = class_getInstanceMethod(clazz, origSelector);
     Method swizzledMethod = class_getInstanceMethod(clazz, newSelector);
-    
+
     BOOL didAddMethod = class_addMethod(clazz,
                                         origSelector,
                                         method_getImplementation(swizzledMethod),
@@ -63,6 +63,23 @@ void _dynamicAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
+
+//typedef IMP *IMPPointer;
+//
+//
+//BOOL _class_swizzleMethodAndStore(Class class, SEL original, IMP replacement, IMPPointer store) {
+//    IMP imp = NULL;
+//    Method method = class_getInstanceMethod(class, original);
+//    if (method) {
+//        const char *type = method_getTypeEncoding(method);
+//        imp = class_replaceMethod(class, original, replacement, type);
+//        if (!imp) {
+//            imp = method_getImplementation(method);
+//        }
+//    }
+//    if (imp && store) { *store = imp; }
+//    return (imp != NULL);
+//}  
 
 static NSString* _dynamicAopPutArgument(NSInvocation* invocation,NSString* argumentType,va_list args,int atIndex){
     NSString* argumentString = @"";
@@ -123,7 +140,7 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     return returnString;
 }
 
-SEL _mappedHackName(NSString* methodIdentifier,NSString* originalSelectorName){
+SEL _mappedHackName(NSString* originalSelectorName){
 //    methodIdentifier = @"UIViewController";
     NSString* newName = [NSString stringWithFormat:@"%@_HackMethod",originalSelectorName];
     newName = [newName stringByReplacingOccurrencesOfString:@":" withString:@""];
@@ -149,17 +166,17 @@ static NSInvocation* _createHakeInvocation(id self, SEL _cmd){
     {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
         [invocation setTarget:self];
-        SEL swizzledSelector = _mappedHackName(NSStringFromClass([self class]),NSStringFromSelector(_cmd));
+        SEL swizzledSelector = _mappedHackName(NSStringFromSelector(_cmd));
         [invocation setSelector:swizzledSelector];
         return invocation;
     }
     
 }
 
-
 static void* _hackWrap(id self, SEL _cmd,...){
     NSLog(@"============start===============");
     NSLog(@"--->%@",[NSString stringWithUTF8String:object_getClassName(self)]);
+//    getImplementations(self);
     NSMutableArray* infoArray = [NSMutableArray array];
     va_list args;
     NSInvocation* invocation = _createHakeInvocation(self, _cmd);
@@ -273,7 +290,7 @@ int dynamicAopAddMonitor(NSString* className,NSString* selectorName,ResultCallba
         NSLog(@"不能监听方法-方法参数列表不支持 %@",methodUniqueKey);
         return -1;
     }
-    SEL swizzledSelector = _mappedHackName(className,selectorName);
+    SEL swizzledSelector = _mappedHackName(selectorName);
     if (!_dynamicAopSupportThisReturnType(methodSignature)) {
         
         NSLog(@"不能监听方法-方法返回值不支持 %@",methodUniqueKey);

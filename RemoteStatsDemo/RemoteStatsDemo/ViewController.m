@@ -16,26 +16,22 @@
 
 @implementation ViewController
 
-+ (void)initialize{
-    NSLog(@"%@ initialize in category",NSStringFromClass([self class]));
-    if ([NSStringFromClass([self class]) isEqualToString:@"ViewController"]) {
-        NSLog(@"Monitor %@",NSStringFromClass([self class]));
-//        dynamicAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)),^(NSArray* result){
-//            NSLog(@"=result:%@",result);
-//        });
-        dynamicAopAddMonitor(@"UIViewController", @"viewDidAppear:",^(NSArray* result){
-            NSLog(@"=result:%@",result);
-        });
-//        dynamicAopAddMonitor(@"ViewController", @"viewDidAppear:",^(NSArray* result){
-//            NSLog(@"=result:%@",result);
-//        });
-//        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(abc:content:num:)),^(NSArray* result){
-//            NSLog(@"=result:%@",result);
-//        });
-//        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(presentViewController:animated:completion:)),^(NSArray* result){
-//            NSLog(@"=result:%@",result);
-//        });
-    }
++ (void)load{
+    //        dynamicAopAddMonitor(NSStringFromClass([self class]), NSStringFromSelector(@selector(def:num:)),^(NSArray* result){
+    //            NSLog(@"=result:%@",result);
+    //        });
+    dynamicAopAddMonitor(@"UIViewController", @"viewDidAppear:",^(NSArray* result){
+        NSLog(@"=result:%@",result);
+    });
+    dynamicAopAddMonitor(@"ViewController", @"viewWillAppear:",^(NSArray* result){
+        NSLog(@"=result:%@",result);
+    });
+//            dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(abc:content:num:)),^(NSArray* result){
+//                NSLog(@"=result:%@",result);
+//            });
+    //        dynamicAopAddMonitor(@"ViewController", NSStringFromSelector(@selector(presentViewController:animated:completion:)),^(NSArray* result){
+    //            NSLog(@"=result:%@",result);
+    //        });
 }
 
 - (void)viewDidLoad {
@@ -58,7 +54,7 @@
     NSLog(@"viewDidAppear");
     NSLog(@"== viewDidAppear %@ %d",NSStringFromSelector(_cmd),animated);
     [super viewDidAppear:animated];
-   
+
 }
 
 

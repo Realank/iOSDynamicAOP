@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monitor</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Monitor</h1>
+
+    <table border="0" class="mappingTable">
+        <tr>
+            <th>Class</th>
+            <th>Method</th>
+        </tr>
+        <% result.forEach(function (mapping) {%>
+            <tr>
+                <td><%= mapping.className%></td>
+                <td><%= mapping.methodName%></td>
+            </tr>
+        <%})%>
+    </table>
+  </body>
+</html>

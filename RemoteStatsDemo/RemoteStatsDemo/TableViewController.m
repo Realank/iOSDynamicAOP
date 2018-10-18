@@ -7,7 +7,6 @@
 //
 
 #import "TableViewController.h"
-#import "DynamicAOP.h"
 @interface TableViewController ()
 
 @end
