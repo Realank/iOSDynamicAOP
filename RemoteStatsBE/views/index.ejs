@@ -3,21 +3,60 @@
   <head>
     <title>Monitor</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+      <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
+      </script>
+      <script>
+          function remove(mapping){
+            console.log('remove ' + mapping.className)
+          }
+          function add(className, methodName){
+            console.log('add ' +className + ' ' + methodName)
+            var pattern= new RegExp(/^[a-zA-Z_][\w_:]{0,50}$/);
+            if (pattern.test(className) && pattern.test(methodName)){
+              console.log('test pass');
+              $.post('http://localhost:3000/api/upload',{className,methodName},(data,status)=>{
+                console.log('post:'+data+' '+status)
+                window.location.reload()
+              })
+            } else{
+              alert('Wrong className or methodName')
+            }
+          }
+          function remove(mapping){
+            console.log('remove ' + mapping.className + ' ' + mapping.methodName)
+            $.post('http://localhost:3000/api/remove',mapping ,(data,status)=>{
+              console.log('remove:'+data+' '+status)
+              window.location.reload()
+            })
+          }
+      </script>
   </head>
   <body>
     <h1>Monitor</h1>
-
+    <h5><%= result.length%> methods to monitor</h5>
     <table border="0" class="mappingTable">
         <tr>
             <th>Class</th>
             <th>Method</th>
+            <th class="edit">Edit</th>
         </tr>
-        <% result.forEach(function (mapping) {%>
+        <% if (result.length == 0){ %>
+            <tr><td colspan="3" class="empty">empty</td></tr>
+        <% }else{%>
+            <% result.forEach(function (mapping) {%>
             <tr>
                 <td><%= mapping.className%></td>
                 <td><%= mapping.methodName%></td>
+                <td class="edit"><button class="remove" onclick="remove(<%=JSON.stringify(mapping)%>)">x</button></td>
             </tr>
-        <%})%>
+            <%})%>
+        <%}%>
+
+        <tr>
+            <td><input type="text" id="className"></td>
+            <td><input type="text" id="methodName"></td>
+            <td><button class="add" onclick="add(document.getElementById('className').value,document.getElementById('methodName').value)">+</button></td>
+        </tr>
     </table>
   </body>
 </html>
