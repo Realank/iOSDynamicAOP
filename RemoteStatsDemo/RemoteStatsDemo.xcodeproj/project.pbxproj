@@ -16,6 +16,7 @@
 		8CE7844B2176E8B400726241 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7844A2176E8B400726241 /* TableViewController.m */; };
 		8CE7848C2178227D00726241 /* DynamicAOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7848B2178227D00726241 /* DynamicAOP.m */; };
 		8CE7848F217825BC00726241 /* UIViewController+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7848E217825BC00726241 /* UIViewController+AOP.m */; };
+		8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE78495217EEB5200726241 /* DynamicAOPManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,8 @@
 		8CE7848B2178227D00726241 /* DynamicAOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicAOP.m; sourceTree = "<group>"; };
 		8CE7848D217825BC00726241 /* UIViewController+AOP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AOP.h"; sourceTree = "<group>"; };
 		8CE7848E217825BC00726241 /* UIViewController+AOP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AOP.m"; sourceTree = "<group>"; };
+		8CE78494217EEB5200726241 /* DynamicAOPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPManager.h; sourceTree = "<group>"; };
+		8CE78495217EEB5200726241 /* DynamicAOPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 				8CE7844A2176E8B400726241 /* TableViewController.m */,
 				8CE7848A2178227D00726241 /* DynamicAOP.h */,
 				8CE7848B2178227D00726241 /* DynamicAOP.m */,
+				8CE78494217EEB5200726241 /* DynamicAOPManager.h */,
+				8CE78495217EEB5200726241 /* DynamicAOPManager.m */,
 				8CE7842E21748B9B00726241 /* Main.storyboard */,
 				8CE7843121748B9C00726241 /* Assets.xcassets */,
 				8CE7843321748B9C00726241 /* LaunchScreen.storyboard */,
@@ -160,6 +165,7 @@
 				8CE7848F217825BC00726241 /* UIViewController+AOP.m in Sources */,
 				8CE7842D21748B9B00726241 /* ViewController.m in Sources */,
 				8CE7843821748B9C00726241 /* main.m in Sources */,
+				8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */,
 				8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */,
 				8CE7844B2176E8B400726241 /* TableViewController.m in Sources */,
 			);
