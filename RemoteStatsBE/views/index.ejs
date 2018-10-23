@@ -6,15 +6,15 @@
       <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
       </script>
       <script>
-          function remove(mapping){
-            console.log('remove ' + mapping.className)
-          }
+          // function remove(mapping){
+          //   console.log('remove ' + mapping.className)
+          // }
           function add(className, methodName){
             console.log('add ' +className + ' ' + methodName)
             var pattern= new RegExp(/^[a-zA-Z_][\w_:]{0,50}$/);
             if (pattern.test(className) && pattern.test(methodName)){
               console.log('test pass');
-              $.post('http://localhost:3000/api/upload',{className,methodName},(data,status)=>{
+              $.post('<%=host%>/api/upload',{className,methodName},(data,status)=>{
                 console.log('post:'+data+' '+status)
                 window.location.reload()
               })
@@ -23,8 +23,8 @@
             }
           }
           function remove(mapping){
-            console.log('remove ' + mapping.className + ' ' + mapping.methodName)
-            $.post('http://localhost:3000/api/remove',mapping ,(data,status)=>{
+            console.log('remove ' + mapping.className + ' ' + mapping.methodName + 'at ' +  + '<%=host%>/api/remove')
+            $.post('<%=host%>/api/remove',mapping ,(data,status)=>{
               console.log('remove:'+data+' '+status)
               window.location.reload()
             })

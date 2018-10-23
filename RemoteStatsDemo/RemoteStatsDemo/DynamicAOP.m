@@ -164,8 +164,7 @@ static NSInvocation* _createHakeInvocation(id self, SEL _cmd){
     }
     else
     {
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-        [invocation setTarget:self];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];df        [invocation setTarget:self];
         SEL swizzledSelector = _mappedHackName(NSStringFromSelector(_cmd));
         [invocation setSelector:swizzledSelector];
         return invocation;
