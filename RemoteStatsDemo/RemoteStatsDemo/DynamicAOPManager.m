@@ -35,9 +35,14 @@
 }
 
 - (void)runAOP{
-    [self readAOPMappingFromRom];
-    [self runMapping];
-    [self asyncDownloadAOPMapping];
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self readAOPMappingFromRom];
+        [self runMapping];
+        [self asyncDownloadAOPMapping];
+    });
+    
 }
 
 - (void)asyncDownloadAOPMapping{

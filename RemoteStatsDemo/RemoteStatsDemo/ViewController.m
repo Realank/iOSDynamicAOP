@@ -23,6 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self abc:YES content:@"hello" num:5];
 }
 
 - (void)viewDidAppear:(BOOL)animated{

@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var request = require('request')
 
-var host = 'http://39.105.128.50:3000'
+var host = 'http://www.realank.com:3000'
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
