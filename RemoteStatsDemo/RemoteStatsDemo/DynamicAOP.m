@@ -64,23 +64,6 @@ void _dynamicAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
     }
 }
 
-//typedef IMP *IMPPointer;
-//
-//
-//BOOL _class_swizzleMethodAndStore(Class class, SEL original, IMP replacement, IMPPointer store) {
-//    IMP imp = NULL;
-//    Method method = class_getInstanceMethod(class, original);
-//    if (method) {
-//        const char *type = method_getTypeEncoding(method);
-//        imp = class_replaceMethod(class, original, replacement, type);
-//        if (!imp) {
-//            imp = method_getImplementation(method);
-//        }
-//    }
-//    if (imp && store) { *store = imp; }
-//    return (imp != NULL);
-//}  
-
 static NSString* _dynamicAopPutArgument(NSInvocation* invocation,NSString* argumentType,va_list args,int atIndex){
     NSString* argumentString = @"";
     if ([argumentType isEqualToString:@"i"] || [argumentType isEqualToString:@"I"] ) {
