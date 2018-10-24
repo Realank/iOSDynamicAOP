@@ -42,10 +42,13 @@
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    UITableViewCell* cell = [self custableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell;
+}
+
+- (UITableViewCell *)custableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     cell.textLabel.text = [NSString stringWithFormat:@"%d cell",indexPath.row];
-    
     return cell;
 }
 

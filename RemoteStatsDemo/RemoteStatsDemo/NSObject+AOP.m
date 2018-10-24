@@ -23,209 +23,7 @@ static NSArray<NSDictionary*>* aopMapping;
     
 }
 
-
-BOOL _dynamicAopSupportThisReturnType(NSMethodSignature* signature){
-    if (!signature) {
-        return NO;
-    }
-    NSString* returnType = [NSString stringWithUTF8String:signature.methodReturnType];
-    if (returnType.length != 1) {
-        return NO;
-    }
-    return [@"ilILBd@v" containsString:returnType];
-}
-BOOL _dynamicAopSupportThisArgumentType(NSString* argumentType){
-    if([argumentType isEqualToString:@"@?"]){
-        //block
-        return YES;
-    }
-    if (argumentType.length != 1) {
-        return NO;
-    }
-    return [@"ilILBd@" containsString:argumentType];
-}
-BOOL _dynamicAopSupportTheseArguments(NSMethodSignature* signature){
-    if (!signature) {
-        return NO;
-    }
-    for (int i = 2; i < signature.numberOfArguments; i++) {
-        if (!_dynamicAopSupportThisArgumentType([NSString stringWithUTF8String:[signature getArgumentTypeAtIndex:i]])) {
-            return NO;
-        }
-    }
-    return YES;
-}
-
-int aopAddMonitor(NSString* className,NSString* selectorName,AOPResultCallback resultCallBack){
-    if (!methodAndBlockMapping) {
-        methodAndBlockMapping = [NSMutableDictionary dictionaryWithCapacity:5];
-    }
-    NSString* methodUniqueKey = [NSString stringWithFormat:@"%@-%@",className,selectorName];
-    if (className.length == 0 || selectorName.length == 0) {
-        NSLog(@"不能监听方法-要监听的类名或方法名为空 %@",methodUniqueKey);
-        return -1;
-    }
-    Class clazz = NSClassFromString(className);
-    if (!clazz) {
-        NSLog(@"不能监听方法-要监听的类找不到 %@",methodUniqueKey);
-        return -1;
-    }
-    SEL selector = NSSelectorFromString(selectorName);
-    Method method = class_getInstanceMethod(clazz, selector);
-    if(!method){
-        NSLog(@"不能监听方法-方法找不到 %@",methodUniqueKey);
-        return -1;
-    }
-    NSMethodSignature *methodSignature = [clazz instanceMethodSignatureForSelector:selector];
-    if (!_dynamicAopSupportTheseArguments(methodSignature)) {
-        NSLog(@"不能监听方法-方法参数列表不支持 %@",methodUniqueKey);
-        return -1;
-    }
-    if (!_dynamicAopSupportThisReturnType(methodSignature)) {
-        
-        NSLog(@"不能监听方法-方法返回值不支持 %@",methodUniqueKey);
-        return -1;
-        
-    }else{
-        //交换函数
-        _aopSwizzleMethod(clazz, selector);
-        return 0;
-    }
-    
-}
-
-
-
-SEL generateSwizzedSEL(SEL origSelector){
-    NSString *swizzedSelectorName = [NSString stringWithFormat:@"ORIG_%@", NSStringFromSelector(origSelector)];
-    SEL swizzedSelector = NSSelectorFromString(swizzedSelectorName);
-    return swizzedSelector;
-}
-void _aopSwizzleMethod(Class clazz, SEL origSelector)
-{
-    
-    Method originalMethod = class_getInstanceMethod(clazz, origSelector);
-    SEL swizzedSelector = generateSwizzedSEL(origSelector);
-    if(!class_respondsToSelector(clazz, swizzedSelector)) {
-        BOOL addSuccess = class_addMethod(clazz, swizzedSelector, class_getMethodImplementation(clazz, origSelector), method_getTypeEncoding(originalMethod));
-        NSLog(@"add success %d",addSuccess);
-    }
-    
-    class_replaceMethod(clazz,
-                        origSelector,
-                        (IMP)_objc_msgForward,
-                        method_getTypeEncoding(originalMethod));
-    
-}
-
--(id)forwardingTargetForSelector:(SEL)aSelector{
-    NSLog(@"forwardingTargetForSelector");
-    return nil;
-}
-
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
-    return [[self class] instanceMethodSignatureForSelector:aSelector];
-}
-
-static NSString* _aopPutArgument(NSInvocation* fromInvocation,NSInvocation* toInvocation,NSString* argumentType,int atIndex){
-    NSString* argumentString = @"";
-    if ([argumentType isEqualToString:@"i"] || [argumentType isEqualToString:@"I"] ) {
-        int argument = 0;
-        [fromInvocation getArgument:&argument atIndex:atIndex];
-        argumentString = [NSString stringWithFormat:@"param:(int)%d",argument];
-        NSLog(@"%@",argumentString);
-        [toInvocation setArgument:&argument atIndex:atIndex];
-    }else if ([argumentType isEqualToString:@"l"] || [argumentType isEqualToString:@"L"] ) {
-        long argument = 0;
-        [fromInvocation getArgument:&argument atIndex:atIndex];
-        argumentString = [NSString stringWithFormat:@"param:(long)%ld",argument];
-        NSLog(@"%@",argumentString);
-        [toInvocation setArgument:&argument atIndex:atIndex];
-    }else if ([argumentType isEqualToString:@"B"]) {
-        BOOL argument = NO;
-        [fromInvocation getArgument:&argument atIndex:atIndex];
-        argumentString = [NSString stringWithFormat:@"param:(BOOL)%@",argument ? @"YES":@"NO"];
-        NSLog(@"%@",argumentString);
-        [toInvocation setArgument:&argument atIndex:atIndex];
-    }else if ([argumentType isEqualToString:@"d"]) {
-        double argument = 0.0;
-        [fromInvocation getArgument:&argument atIndex:atIndex];
-        argumentString = [NSString stringWithFormat:@"param:(double)%lf",argument];
-        NSLog(@"%@",argumentString);
-        [toInvocation setArgument:&argument atIndex:atIndex];
-    }else if ([argumentType isEqualToString:@"@"]) {
-        id argument = nil;
-        [fromInvocation getArgument:&argument atIndex:atIndex];
-        argumentString = [NSString stringWithFormat:@"param:(NSObject)%@",argument];
-        NSLog(@"%@",argumentString);
-        [toInvocation setArgument:&argument atIndex:atIndex];
-    }else if ([argumentType isEqualToString:@"@?"]) {
-        id argument = nil;
-        [fromInvocation getArgument:&argument atIndex:atIndex];
-        argumentString = [NSString stringWithFormat:@"param:(block)%@",argument];
-        NSLog(@"%@",argumentString);
-        [toInvocation setArgument:&argument atIndex:atIndex];
-    }
-    return argumentString;
-}
-
-static NSString* _printReturnValue(void* returnValue,NSString* returnType){
-    //ilILB@v
-    NSString* returnString = @"";
-    if (returnType.length == 1 && [@"ilIL" containsString:returnType]) {
-        returnString = [NSString stringWithFormat:@"return:(%@)%ld",returnType,(long)returnValue];
-        NSLog(@"%@",returnString);
-    }else if ([returnType isEqualToString:@"B"]){
-        returnString = [NSString stringWithFormat:@"return:(BOOL)%d",(BOOL)returnValue];
-        NSLog(@"%@",returnString);
-    }else if ([returnType isEqualToString:@"@"]){
-        id obj = (__bridge id) returnValue;
-        returnString = [NSString stringWithFormat:@"return:(%@)%@",NSStringFromClass([obj class]),obj];
-        NSLog(@"%@",returnString);
-    }else if ([returnType isEqualToString:@"v"]){
-        returnString = @"return:(void)";
-        NSLog(@"%@",returnString);
-    }else{
-        returnString = [NSString stringWithFormat:@"return:(%@)unknown",returnType];
-        NSLog(@"%@",returnString);
-    }
-    return returnString;
-}
-
-- (void)forwardInvocation:(NSInvocation *)anInvocation{
-    NSLog(@"===========start================");
-    NSLog(@"selector:%@",NSStringFromSelector(anInvocation.selector));
-    SEL swizzedSelector = generateSwizzedSEL(anInvocation.selector);
-    
-    NSInteger argumentsCount = anInvocation.methodSignature.numberOfArguments;
-    
-    NSInvocation *newInvocation = [NSInvocation invocationWithMethodSignature:anInvocation.methodSignature];
-    
-    [newInvocation setTarget:anInvocation.target];
-    [newInvocation setSelector:swizzedSelector];
-    for (int i = 2; i < argumentsCount; i++) {
-        _aopPutArgument(anInvocation,newInvocation,[NSString stringWithUTF8String:[anInvocation.methodSignature getArgumentTypeAtIndex:i]],i);
-    }
-    [newInvocation invoke];
-    
-    if(anInvocation.methodSignature.methodReturnLength)
-    {
-        if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
-            double callBackObject = 0;
-            [newInvocation getReturnValue:&callBackObject];
-            NSString* resultString = [NSString stringWithFormat:@"return:(double)%lf",callBackObject];
-            NSLog(@"%@",resultString);
-        }else{
-            void* callBackObject = 0;
-            [newInvocation getReturnValue:&callBackObject];
-            NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
-        }
-        
-    }
-    NSLog(@"===========end================");
-    
-}
-
+#pragma mark - mapping management
 
 - (void)runAOP{
     
@@ -309,6 +107,201 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     NSString* filePath = [docDir stringByAppendingPathComponent:@"aop.cache"];
     return filePath;
 }
+
+#pragma mark - validation
+
+BOOL _dynamicAopSupportThisReturnType(NSMethodSignature* signature){
+    if (!signature) {
+        return NO;
+    }
+    NSString* returnType = [NSString stringWithUTF8String:signature.methodReturnType];
+    if (returnType.length != 1) {
+        return NO;
+    }
+    return [@"ilILBd@v" containsString:returnType];
+}
+BOOL _dynamicAopSupportThisArgumentType(NSString* argumentType){
+    if([argumentType isEqualToString:@"@?"]){
+        //block
+        return YES;
+    }
+    if (argumentType.length != 1) {
+        return NO;
+    }
+    return [@"ilILBd@" containsString:argumentType];
+}
+BOOL _dynamicAopSupportTheseArguments(NSMethodSignature* signature){
+    if (!signature) {
+        return NO;
+    }
+    for (int i = 2; i < signature.numberOfArguments; i++) {
+        if (!_dynamicAopSupportThisArgumentType([NSString stringWithUTF8String:[signature getArgumentTypeAtIndex:i]])) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+int aopAddMonitor(NSString* className,NSString* selectorName,AOPResultCallback resultCallBack){
+    if (!methodAndBlockMapping) {
+        methodAndBlockMapping = [NSMutableDictionary dictionaryWithCapacity:5];
+    }
+    NSString* methodUniqueKey = [NSString stringWithFormat:@"%@-%@",className,selectorName];
+    if (className.length == 0 || selectorName.length == 0) {
+        NSLog(@"不能监听方法-要监听的类名或方法名为空 %@",methodUniqueKey);
+        return -1;
+    }
+    Class clazz = NSClassFromString(className);
+    if (!clazz) {
+        NSLog(@"不能监听方法-要监听的类找不到 %@",methodUniqueKey);
+        return -1;
+    }
+    SEL selector = NSSelectorFromString(selectorName);
+    Method method = class_getInstanceMethod(clazz, selector);
+    if(!method){
+        NSLog(@"不能监听方法-方法找不到 %@",methodUniqueKey);
+        return -1;
+    }
+    NSMethodSignature *methodSignature = [clazz instanceMethodSignatureForSelector:selector];
+    if (!_dynamicAopSupportTheseArguments(methodSignature)) {
+        NSLog(@"不能监听方法-方法参数列表不支持 %@",methodUniqueKey);
+        return -1;
+    }
+    if (!_dynamicAopSupportThisReturnType(methodSignature)) {
+        
+        NSLog(@"不能监听方法-方法返回值不支持 %@",methodUniqueKey);
+        return -1;
+        
+    }else{
+        //交换函数
+        _aopSwizzleMethod(clazz, selector);
+        return 0;
+    }
+    
+}
+
+
+#pragma mark - swizzling
+
+SEL generateSwizzledSEL(SEL origSelector){
+    NSString *swizzedSelectorName = [NSString stringWithFormat:@"ORIG_%@", NSStringFromSelector(origSelector)];
+    SEL swizzedSelector = NSSelectorFromString(swizzedSelectorName);
+    return swizzedSelector;
+}
+void _aopSwizzleMethod(Class clazz, SEL origSelector)
+{
+    
+    Method originalMethod = class_getInstanceMethod(clazz, origSelector);
+    SEL swizzedSelector = generateSwizzledSEL(origSelector);
+    if(!class_respondsToSelector(clazz, swizzedSelector)) {
+        BOOL addSuccess = class_addMethod(clazz, swizzedSelector, class_getMethodImplementation(clazz, origSelector), method_getTypeEncoding(originalMethod));
+        NSLog(@"add success %d",addSuccess);
+    }
+    
+    class_replaceMethod(clazz,
+                        origSelector,
+                        (IMP)_objc_msgForward,
+                        method_getTypeEncoding(originalMethod));
+    
+}
+
+#pragma mark - logging and forwarding
+//- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
+//    return [[self class] instanceMethodSignatureForSelector:aSelector];
+//}
+
+static NSString* _aopPrintArgument(NSInvocation* fromInvocation,NSString* argumentType,int atIndex){
+    NSString* argumentString = @"";
+    if ([argumentType isEqualToString:@"i"] || [argumentType isEqualToString:@"I"] ) {
+        int argument = 0;
+        [fromInvocation getArgument:&argument atIndex:atIndex];
+        argumentString = [NSString stringWithFormat:@"param:(int)%d",argument];
+        NSLog(@"%@",argumentString);
+    }else if ([argumentType isEqualToString:@"l"] || [argumentType isEqualToString:@"L"] ) {
+        long argument = 0;
+        [fromInvocation getArgument:&argument atIndex:atIndex];
+        argumentString = [NSString stringWithFormat:@"param:(long)%ld",argument];
+        NSLog(@"%@",argumentString);
+    }else if ([argumentType isEqualToString:@"B"]) {
+        BOOL argument = NO;
+        [fromInvocation getArgument:&argument atIndex:atIndex];
+        argumentString = [NSString stringWithFormat:@"param:(BOOL)%@",argument ? @"YES":@"NO"];
+        NSLog(@"%@",argumentString);
+    }else if ([argumentType isEqualToString:@"d"]) {
+        double argument = 0.0;
+        [fromInvocation getArgument:&argument atIndex:atIndex];
+        argumentString = [NSString stringWithFormat:@"param:(double)%lf",argument];
+        NSLog(@"%@",argumentString);
+    }else if ([argumentType isEqualToString:@"@"]) {
+        id argument = nil;
+        [fromInvocation getArgument:&argument atIndex:atIndex];
+        argumentString = [NSString stringWithFormat:@"param:(NSObject)%@",argument];
+        NSLog(@"%@",argumentString);
+    }else if ([argumentType isEqualToString:@"@?"]) {
+        id argument = nil;
+        [fromInvocation getArgument:&argument atIndex:atIndex];
+        argumentString = [NSString stringWithFormat:@"param:(block)%@",argument];
+        NSLog(@"%@",argumentString);
+    }
+    return argumentString;
+}
+
+static NSString* _printReturnValue(void* returnValue,NSString* returnType){
+    //ilILB@v
+    NSString* returnString = @"";
+    if (returnType.length == 1 && [@"ilIL" containsString:returnType]) {
+        returnString = [NSString stringWithFormat:@"return:(%@)%ld",returnType,(long)returnValue];
+        NSLog(@"%@",returnString);
+    }else if ([returnType isEqualToString:@"B"]){
+        returnString = [NSString stringWithFormat:@"return:(BOOL)%d",(BOOL)returnValue];
+        NSLog(@"%@",returnString);
+    }else if ([returnType isEqualToString:@"@"]){
+        id obj = (__bridge id) returnValue;
+        returnString = [NSString stringWithFormat:@"return:(%@)%@",NSStringFromClass([obj class]),obj];
+        NSLog(@"%@",returnString);
+    }else if ([returnType isEqualToString:@"v"]){
+        returnString = @"return:(void)";
+        NSLog(@"%@",returnString);
+    }else{
+        returnString = [NSString stringWithFormat:@"return:(%@)unknown",returnType];
+        NSLog(@"%@",returnString);
+    }
+    return returnString;
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation{
+    NSLog(@"===========start================");
+    NSLog(@"selector:%@",NSStringFromSelector(anInvocation.selector));
+    SEL swizzedSelector = generateSwizzledSEL(anInvocation.selector);
+    
+    NSInteger argumentsCount = anInvocation.methodSignature.numberOfArguments;
+    
+    [anInvocation setSelector:swizzedSelector];
+    for (int i = 2; i < argumentsCount; i++) {
+        _aopPrintArgument(anInvocation,[NSString stringWithUTF8String:[anInvocation.methodSignature getArgumentTypeAtIndex:i]],i);
+    }
+    [anInvocation invoke];
+    
+    if(anInvocation.methodSignature.methodReturnLength)
+    {
+        if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
+            double callBackObject = 0;
+            [anInvocation getReturnValue:&callBackObject];
+            NSString* resultString = [NSString stringWithFormat:@"return:(double)%lf",callBackObject];
+            NSLog(@"%@",resultString);
+//            [anInvocation setReturnValue:callBackObject];
+        }else{
+            void* callBackObject = 0;
+            [anInvocation getReturnValue:&callBackObject];
+            NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
+        }
+        
+    }
+    NSLog(@"===========end================");
+    
+}
+
+
 
 
 

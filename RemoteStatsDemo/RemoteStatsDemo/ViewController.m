@@ -19,11 +19,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self abc:9 content:@"hellod" num:5];
-    [self hij:@"hello" num:4];
-    [self def:^(int i, NSString *a) {
-        NSLog(@"%d %@",i,a);
-    } num:99];
+//    [self abc:9 content:@"hellod" num:5];
+//    [self hij:@"hello" num:4];
+//    double ret = [self def:^(int i, NSString *a) {
+//        NSLog(@"%d %@",i,a);
+//    } num:99];
+//    NSLog(@"ret value %lf",ret);
+    TableViewController* vc = [TableViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
