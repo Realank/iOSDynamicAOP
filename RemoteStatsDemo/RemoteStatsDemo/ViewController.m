@@ -9,31 +9,32 @@
 #import "ViewController.h"
 #include "DynamicAOPManager.h"
 #import "TableViewController.h"
-
+#import <objc/runtime.h>
+#import <objc/message.h>
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
 
-+ (void)load{
-
-    [[DynamicAOPManager sharedInstance] runAOP];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self abc:YES content:@"hello" num:5];
+    [self abc:9 content:@"hellod" num:5];
+    [self hij:@"hello" num:4];
+    [self def:^(int i, NSString *a) {
+        NSLog(@"%d %@",i,a);
+    } num:99];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-
-}
 
 
-- (int)abc:(BOOL)is content:(NSString*)content num:(int)num{
+- (int)abc:(int)is content:(NSString*)content num:(int)num{
     NSLog(@"== abc %@ %d %@ %d",NSStringFromSelector(_cmd),is,content,num);
+    return 314743647;
+}
+
+- (int)hij:(NSString*)content num:(int)num{
+    NSLog(@"== hij %@ %@ %d",NSStringFromSelector(_cmd),content,num);
     return 314743647;
 }
 
@@ -42,7 +43,6 @@
     is(883,@"dddd");
     return 0.2355657;
 }
-
 
 
 @end

@@ -51,6 +51,9 @@
     NSURLSession *session = [NSURLSession sharedSession];
     __weak __typeof(self) weakSelf = self;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!data || error) {
+            return;
+        }
         NSDictionary* jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
         if ([jsonObject isKindOfClass:[NSDictionary class]] && [jsonObject[@"status"] isEqualToString:@"success"]) {
             NSArray* mappingRawArray = jsonObject[@"monitor"];

@@ -64,35 +64,37 @@ void _dynamicAopSwizzleMethod(Class clazz, SEL origSelector,SEL newSelector)
     }
 }
 
-static NSString* _dynamicAopPutArgument(NSInvocation* invocation,NSString* argumentType,va_list args,int atIndex){
+static NSString* _dynamicAopPutArgument(NSInvocation* invocation,NSString* argumentType,va_list argsList,int atIndex){
     NSString* argumentString = @"";
     if ([argumentType isEqualToString:@"i"] || [argumentType isEqualToString:@"I"] ) {
-        int argument = va_arg(args, int);
+        int argument = va_arg(argsList, int);
         argumentString = [NSString stringWithFormat:@"param:(int)%d",argument];
         NSLog(@"%@",argumentString);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"l"] || [argumentType isEqualToString:@"L"] ) {
-        long argument = va_arg(args, long);
+        long argument = va_arg(argsList, long);
         argumentString = [NSString stringWithFormat:@"param:(long)%ld",argument];
         NSLog(@"%@",argumentString);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"B"]) {
-        BOOL argument = va_arg(args, int) != 0;
+        BOOL argument = va_arg(argsList, int) != 0;
         argumentString = [NSString stringWithFormat:@"param:(BOOL)%@",argument ? @"YES":@"NO"];
         NSLog(@"%@",argumentString);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"d"]) {
-        double argument = va_arg(args, double);
+        double argument = va_arg(argsList, double);
         argumentString = [NSString stringWithFormat:@"param:(double)%lf",argument];
         NSLog(@"%@",argumentString);
         [invocation setArgument:&argument atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"@"]) {
-        id argument = va_arg(args, id);
-        argumentString = [NSString stringWithFormat:@"param:(%@)%@",NSStringFromClass([argument class]),argument];
+        void * argument = va_arg(argsList, void *);
+        id obj = (__bridge id)argument;
+//        NSString* obj = va_arg(argsList, NSString*);
+        argumentString = [NSString stringWithFormat:@"param:(%@)%@",NSStringFromClass([obj class]),obj];
         NSLog(@"%@",argumentString);
-        [invocation setArgument:&argument atIndex:atIndex];
+        [invocation setArgument:&obj atIndex:atIndex];
     }else if ([argumentType isEqualToString:@"@?"]) {
-        id argument = va_arg(args, id);
+        id argument = va_arg(argsList, id);
         argumentString = [NSString stringWithFormat:@"param:(block)%@",argument];
         NSLog(@"%@",argumentString);
         [invocation setArgument:&argument atIndex:atIndex];
