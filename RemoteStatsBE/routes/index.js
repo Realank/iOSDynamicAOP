@@ -2,7 +2,8 @@ var express = require('express')
 var router = express.Router()
 var request = require('request')
 
-var host = 'http://www.realank.com:3000'
+var test = 1
+var host = test ? 'http://localhost:3000' : 'http://www.realank.com:3000'
 
 /* GET home page. */
 router.get('/', function (req, res, next) {

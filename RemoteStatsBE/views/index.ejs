@@ -9,7 +9,9 @@
           // function remove(mapping){
           //   console.log('remove ' + mapping.className)
           // }
-          function add(className, methodName){
+          function add(){
+            var className = document.getElementById('className').value
+            var methodName = document.getElementById('methodName').value
             console.log('add ' +className + ' ' + methodName)
             var pattern= new RegExp(/^[a-zA-Z_][\w_:]{0,50}$/);
             if (pattern.test(className) && pattern.test(methodName)){
@@ -36,26 +38,70 @@
     <h5><%= result.length%> methods to monitor</h5>
     <table border="0" class="mappingTable">
         <tr>
-            <th>Class</th>
-            <th>Method</th>
+            <th>Mapping</th>
             <th class="edit">Edit</th>
         </tr>
         <% if (result.length == 0){ %>
-            <tr><td colspan="3" class="empty">empty</td></tr>
+            <tr><td class="empty">empty</td><td class="empty"></td></tr>
         <% }else{%>
             <% result.forEach(function (mapping) {%>
             <tr>
-                <td><%= mapping.className%></td>
-                <td><%= mapping.methodName%></td>
-                <td class="edit"><button class="remove" onclick="remove(<%=JSON.stringify(mapping)%>)">x</button></td>
+                <td>
+
+                    <div class="row">
+                        <h4 class="desc">Monitoring:</h4>
+                        <h4 class="content"><%= mapping.className%></h4>
+                        <h4 class="subscript">class</h4>
+                        <h4 class="content"><%= mapping.methodName%></h4>
+                        <h4 class="subscript">method</h4>
+                    </div>
+                    <div class="row">
+                        <h4 class="desc">Detail:</h4>
+                    </div>
+
+                </td>
+                <td class="edit">
+                    <button class="remove" onclick="remove(<%=JSON.stringify(mapping)%>)">x</button>
+                </td>
             </tr>
             <%})%>
         <%}%>
 
         <tr>
-            <td><input type="text" id="className"></td>
-            <td><input type="text" id="methodName"></td>
-            <td><button class="add" onclick="add(document.getElementById('className').value,document.getElementById('methodName').value)">+</button></td>
+            <td>
+                <div class="row">
+                    <h4 class="desc">Add:</h4>
+                    <input type="text" id="className" placeholder="class">
+                    <input type="text" id="methodName" placeholder="method">
+                </div>
+                <div class="row">
+                    <h4 class="desc">Detail:</h4>
+                </div>
+                <div class="row">
+                    <h4 class="desc">Event code:</h4>
+                    <input type="text" id="eventCode" placeholder="Event code">
+                    <h4 class="desc">Show detail:</h4>
+                    <input type="checkbox" id="eventCode">
+                    <h4 class="desc">Mark:</h4>
+                    <input type="text" id="mark" placeholder="Mark">
+                </div>
+                <div class="row">
+                    <h4 class="desc">Filter:</h4>
+                </div>
+                <div class="row">
+                    <div class="subRow">
+                        <h4 class="desc">Item:</h4>
+                        <h4 class="desc">Content:</h4>
+                    </div>
+                    <div class="subRow">
+                        <h4 class="desc">Item:</h4>
+                        <h4 class="desc">Content:</h4>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <button class="add" onclick="add()">+</button>
+            </td>
         </tr>
     </table>
   </body>

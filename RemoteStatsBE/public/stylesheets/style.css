@@ -52,3 +52,40 @@ body {
 .mappingTable .add{
     color: #448bff;
 }
+
+.row{
+    text-align: left;
+    padding: 10px;
+}
+
+.row h4{
+    font-size: 17px;
+    display: inline;
+    text-align: left;
+}
+
+.row .desc{
+    color: gray;
+    padding-right: 10px;
+}
+
+.row .content{
+    padding-right: 5px;
+}
+
+.row .subscript{
+    font-size: 9px;
+    padding-right: 20px;
+    color: gray;
+    vertical-align:super
+}
+
+.row input{
+    font-size: 17px;
+}
+
+.subRow{
+    margin: 0px 10px 0px 10px;
+    padding: 5px;
+    background-color: rgba(0, 183, 255, 0.2);
+}

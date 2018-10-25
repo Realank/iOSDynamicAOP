@@ -7,26 +7,29 @@
 //
 
 #import "TableViewController.h"
+#import <objc/runtime.h>
 @interface TableViewController ()
 
 @end
 
 @implementation TableViewController
++(void)load{
+    ucar_aop_hookMethod([self class], @selector(tableView:cellForRowAtIndexPath:), @selector(custableView:cellForRowAtIndexPath:));
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    __weak __typeof(self) weakSelf = self;
-//    dynamicAopAddMonitor(@"TableViewController", NSStringFromSelector(@selector(tableView:cellForRowAtIndexPath:)),^(NSArray* resultArray){
-//        NSLog(@"=result:%@",weakSelf);
-//    });
 }
 
+static void ucar_aop_hookMethod(Class aClass, SEL originMeth, SEL newMeth)
+{
+    Method origMethod = class_getInstanceMethod(aClass, originMeth);
+    Method newMethod = class_getInstanceMethod(aClass, newMeth);
+    
+    method_exchangeImplementations(origMethod, newMethod);
+}
 - (void)dealloc{
     NSLog(@"TableViewController dealloc");
 }
@@ -42,11 +45,15 @@
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    UITableViewCell* cell = [self custableView:tableView cellForRowAtIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"tableView");
+    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    cell.textLabel.text = [NSString stringWithFormat:@"%d cell",indexPath.row];
     return cell;
 }
 
 - (UITableViewCell *)custableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"custableView");
     UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     cell.textLabel.text = [NSString stringWithFormat:@"%d cell",indexPath.row];
     return cell;

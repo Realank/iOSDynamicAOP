@@ -17,6 +17,7 @@
 		8CE7848C2178227D00726241 /* DynamicAOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7848B2178227D00726241 /* DynamicAOP.m */; };
 		8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE78495217EEB5200726241 /* DynamicAOPManager.m */; };
 		8CE8189421802DA2001EC631 /* NSObject+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE8189321802DA2001EC631 /* NSObject+AOP.m */; };
+		8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7DF1A2180703D00BDB555 /* Aspects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		8CE78495217EEB5200726241 /* DynamicAOPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPManager.m; sourceTree = "<group>"; };
 		8CE8189221802DA2001EC631 /* NSObject+AOP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+AOP.h"; sourceTree = "<group>"; };
 		8CE8189321802DA2001EC631 /* NSObject+AOP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AOP.m"; sourceTree = "<group>"; };
+		8CF7DF192180703D00BDB555 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
+		8CF7DF1A2180703D00BDB555 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,14 +73,16 @@
 		8CE7842721748B9B00726241 /* RemoteStatsDemo */ = {
 			isa = PBXGroup;
 			children = (
+				8CF7DF192180703D00BDB555 /* Aspects.h */,
+				8CF7DF1A2180703D00BDB555 /* Aspects.m */,
 				8CE7842821748B9B00726241 /* AppDelegate.h */,
 				8CE7842921748B9B00726241 /* AppDelegate.m */,
 				8CE7842B21748B9B00726241 /* ViewController.h */,
 				8CE7842C21748B9B00726241 /* ViewController.m */,
-				8CE8189221802DA2001EC631 /* NSObject+AOP.h */,
-				8CE8189321802DA2001EC631 /* NSObject+AOP.m */,
 				8CE784492176E8B400726241 /* TableViewController.h */,
 				8CE7844A2176E8B400726241 /* TableViewController.m */,
+				8CE8189221802DA2001EC631 /* NSObject+AOP.h */,
+				8CE8189321802DA2001EC631 /* NSObject+AOP.m */,
 				8CE7848A2178227D00726241 /* DynamicAOP.h */,
 				8CE7848B2178227D00726241 /* DynamicAOP.m */,
 				8CE78494217EEB5200726241 /* DynamicAOPManager.h */,
@@ -168,6 +173,7 @@
 				8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */,
 				8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */,
 				8CE7844B2176E8B400726241 /* TableViewController.m in Sources */,
+				8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

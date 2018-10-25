@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+
+body {
+  padding: 50px;
+  font: 19px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.mappingTable {
+  border-color: #00B7FF;
+  border-style: solid;
+  border-width: 2px;
+  width: 100%;
+  text-align: center;
+  font-size: 17px;
+}
+
+.mappingTable th{
+  background-color: #a3e9ff;
+}
+
+.mappingTable tr{
+  height: 30px;
+}
+
+.mappingTable tr:nth-child(2n){
+  background-color: aliceblue;
+}
+
+/*.mappingTable td{*/
+/*border:1px solid #ccc;*/
+/*}*/
+
+.mappingTable .edit{
+  width: 100px;
+}
+
+.mappingTable .empty{
+  font-style: italic;
+  color: gray;
+  background-color: aliceblue;
+}
+
+.mappingTable button {
+  cursor:pointer;
+  font-size: 20px;
+  border-style: none;
+  background-color: transparent;
+}
+
+.mappingTable button.remove{
+  color: #e72f1e;
+}
+
+.mappingTable .add{
+  color: #448bff;
+}
+
+.row{
+  text-align: left;
+  padding: 10px;
+  display: flex;
+}
+
+h4{
+  font-size: 17px;
+  display: inline;
+  text-align: left;
+  margin:2px;
+}
+
+.desc{
+  color: gray;
+  padding-right: 10px;
+}
+
+.content{
+  padding-right: 5px;
+}
+
+.subscript{
+  font-size: 9px;
+  padding-right: 20px;
+  color: gray;
+  vertical-align:super
+}
+
+input{
+
+  font-size: 17px;
+  margin-right: 10px;
+
+}
+
+.subRow{
+  margin: 0px 10px 0px 10px;
+  padding: 5px;
+  background-color: rgba(0, 183, 255, 0.2);
+  display: flex;
+}
+
+.subRow h4{
+  margin:2px;
+
+}
+
+tr:last-child{
+  background-color: rgba(40, 44, 52, 0.04);
+}
+
+.subRow .add{
+  align-self: right;
+}
+
+.sameWidth{
+  width: 100%;
+  padding: 2px;
+  text-align: left;
+}
+
+
+.subRow .sameWidth:last-child{
+  width: 10%;
+  text-align: right;
+}
+
+.filter {
+  display: block;
+
+}

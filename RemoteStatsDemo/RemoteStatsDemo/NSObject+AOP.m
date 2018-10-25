@@ -18,22 +18,24 @@ static NSArray<NSDictionary*>* aopMapping;
 +(void)load{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self runAOP];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [self runAOP];
+        });
     });
-    
+
 }
 
 #pragma mark - mapping management
 
 - (void)runAOP{
-    
+
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self readAOPMappingFromRom];
         [self runMapping];
         [self asyncDownloadAOPMapping];
     });
-    
+
 }
 
 - (void)asyncDownloadAOPMapping{
@@ -57,7 +59,7 @@ static NSArray<NSDictionary*>* aopMapping;
                         continue;
                     }
                     [mappingArray addObject:@{@"className":className,@"methodName":methodName}];
-                    
+
                 }
                 if (mappingArray.count) {
                     NSData* cacheData = [NSKeyedArchiver archivedDataWithRootObject:[mappingArray copy] requiringSecureCoding:YES error:nil];
@@ -93,12 +95,12 @@ static NSArray<NSDictionary*>* aopMapping;
         if (className.length == 0 || methodName.length == 0) {
             continue;
         }
-        
+
         aopAddMonitor(className, methodName,^(NSArray* result){
             NSLog(@"=result:%@",result);
         });
     }
-    
+
 }
 
 
@@ -168,16 +170,16 @@ int aopAddMonitor(NSString* className,NSString* selectorName,AOPResultCallback r
         return -1;
     }
     if (!_dynamicAopSupportThisReturnType(methodSignature)) {
-        
+
         NSLog(@"不能监听方法-方法返回值不支持 %@",methodUniqueKey);
         return -1;
-        
+
     }else{
         //交换函数
         _aopSwizzleMethod(clazz, selector);
         return 0;
     }
-    
+
 }
 
 
@@ -190,19 +192,19 @@ SEL generateSwizzledSEL(SEL origSelector){
 }
 void _aopSwizzleMethod(Class clazz, SEL origSelector)
 {
-    
+
     Method originalMethod = class_getInstanceMethod(clazz, origSelector);
     SEL swizzedSelector = generateSwizzledSEL(origSelector);
     if(!class_respondsToSelector(clazz, swizzedSelector)) {
         BOOL addSuccess = class_addMethod(clazz, swizzedSelector, class_getMethodImplementation(clazz, origSelector), method_getTypeEncoding(originalMethod));
         NSLog(@"add success %d",addSuccess);
     }
-    
+
     class_replaceMethod(clazz,
                         origSelector,
                         (IMP)_objc_msgForward,
                         method_getTypeEncoding(originalMethod));
-    
+
 }
 
 #pragma mark - logging and forwarding
@@ -273,15 +275,15 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     NSLog(@"===========start================");
     NSLog(@"selector:%@",NSStringFromSelector(anInvocation.selector));
     SEL swizzedSelector = generateSwizzledSEL(anInvocation.selector);
-    
+
     NSInteger argumentsCount = anInvocation.methodSignature.numberOfArguments;
-    
+
     [anInvocation setSelector:swizzedSelector];
     for (int i = 2; i < argumentsCount; i++) {
         _aopPrintArgument(anInvocation,[NSString stringWithUTF8String:[anInvocation.methodSignature getArgumentTypeAtIndex:i]],i);
     }
     [anInvocation invoke];
-    
+
     if(anInvocation.methodSignature.methodReturnLength)
     {
         if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
@@ -295,10 +297,10 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
             [anInvocation getReturnValue:&callBackObject];
             NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
         }
-        
+
     }
     NSLog(@"===========end================");
-    
+
 }
 
 
