@@ -5,8 +5,8 @@ class Waiting extends Component {
   render () {
     return (
       <tr>
-        <td class='empty'>waiting...</td>
-        <td class='empty' />
+        <td className='empty'>loading...</td>
+        <td className='empty' />
       </tr>
     )
   }
@@ -16,8 +16,8 @@ class Empty extends Component {
   render () {
     return (
       <tr>
-        <td class='empty'>empty</td>
-        <td class='empty' />
+        <td className='empty'>empty</td>
+        <td className='empty' />
       </tr>
     )
   }
@@ -30,26 +30,26 @@ class MappingItem extends Component {
       <tr>
         <td>
 
-          <div class='row'>
-            <div class='sameWidth'>
-              <h4 class='content'>
+          <div className='row'>
+            <div className='sameWidth'>
+              <h4 className='content'>
                 {mappingItem.className}</h4>
               <h4 className='subscript'>class</h4>
             </div>
-            <div class='sameWidth'>
-              <h4 class='content'>{mappingItem.methodName}</h4>
-              <h4 class='subscript'>method</h4>
+            <div className='sameWidth'>
+              <h4 className='content'>{mappingItem.methodName}</h4>
+              <h4 className='subscript'>method</h4>
             </div>
 
           </div>
           <div className='row'>
-            <div class='sameWidth'><h4 class='desc'>Event code:</h4></div>
-            <div class='sameWidth'><h4 class='desc'>Mark:</h4></div>
-            <div class='sameWidth'><h4 class='desc'>Collect detail:</h4><input type='checkbox' disabled checked /></div>
+            <div className='sameWidth'><h4 className='desc'>Event code:</h4></div>
+            <div className='sameWidth'><h4 className='desc'>Mark:</h4></div>
+            <div className='sameWidth'><h4 className='desc'>Collect detail:</h4><input type='checkbox' disabled checked /></div>
 
           </div>
-          <div >
-            <MappingFilterList />
+          <div className='row filter'>
+            <MappingFilterList canRemove={false} />
 
           </div>
 
@@ -88,12 +88,16 @@ class MappingList extends Component {
 
 class MappingFilterList extends Component {
   render () {
+    let removeButton = <div className='sameWidth' ><button className='remove' onClick='remove()'>x</button></div>
+    if (this.props.canRemove === false) {
+      removeButton = <div className='sameWidth' />
+    }
     return (
 
-      <div class='subRow'>
+      <div className='subRow'>
         <div className='sameWidth'><h4 className='desc'>Filter key:</h4></div>
         <div className='sameWidth'><h4 className='desc'>Content:</h4></div>
-        <div className='sameWidth' ><button className='remove' onClick='remove()'>x</button></div>
+        {removeButton}
       </div>
 
     )
@@ -105,26 +109,34 @@ class InputNewMapping extends Component {
     return (
       <tr >
         <td>
-          <div class='row'>
-            <h4 class='desc'>Add a new mapping:</h4>
+          <div className='row'>
+            <h4 className='desc'>Add a new mapping:</h4>
           </div>
-          <div class='row'>
+          <div className='row'>
             <input type='text' id='className' placeholder='class' />
             <input type='text' id='methodName' placeholder='method' />
           </div>
-          <div class='row'>
-            <h4 class='desc'>Event code:</h4>
-            <input type='text' id='eventCode' placeholder='Event code' />
-            <h4 class='desc'>Mark:</h4>
-            <input type='text' id='mark' placeholder='Mark' />
-            <h4 class='desc'>Collect detail:</h4>
-            <input type='checkbox' id='collectDetail' />
+          <div className='row' style={{ padding: '2px 0px 0px', margin: '0px 10px', backgroundColor: 'white'}} />
+          <div className='row'>
+            <div className='sameWidth'>
+              <h4 className='desc'>Event code:</h4>
+              <input type='text' id='eventCode' placeholder='Event code' />
+            </div>
+            <div className='sameWidth'>
+              <h4 className='desc'>Mark:</h4>
+              <input type='text' id='mark' placeholder='Mark' />
+            </div>
+            <div className='sameWidth'>
+              <h4 className='desc'>Collect detail:</h4>
+              <input type='checkbox' id='collectDetail' />
+            </div>
+
           </div>
-          <div class='row'>
-            <h4 class='desc'>Filter:</h4>
+          <div className='row'>
+            <h4 className='desc'>Filter:</h4>
           </div>
-          <div class='row,filter' >
-            <MappingFilterList />
+          <div className='row filter' >
+            <MappingFilterList canRemove />
 
             <div className='subRow'>
               <div className='sameWidth'><input type='text' id='eventCode' placeholder='Filter key' /></div>
@@ -137,7 +149,7 @@ class InputNewMapping extends Component {
           </div>
         </td>
         <td>
-          <button class='add' onClick='add()'>+</button>
+          <button className='add' onClick='add()'>+</button>
         </td>
       </tr>
     )
@@ -151,14 +163,16 @@ class App extends Component {
   }
 
   componentDidMount () {
-    this.setState(
-      {
-        ...this.state,
-        list: [
-          {className: 'ViewController', methodName: 'viewDidAppear:'},
-          {className: 'UIViewController', methodName: 'viewDidAppear:'}
-        ]}
-    )
+    setTimeout(function () {
+      this.setState(
+        {
+          ...this.state,
+          list: [
+            {className: 'ViewController', methodName: 'viewDidAppear:'},
+            {className: 'UIViewController', methodName: 'viewDidAppear:'}
+          ]}
+      )
+    }.bind(this), 1000)
   }
   render () {
     let countString = 0
@@ -170,18 +184,20 @@ class App extends Component {
       <div>
         <h1>Monitor</h1>
         <h4> {countString} methods to monitor</h4>
-        <table border='0' class='mappingTable'>
+        <table border='0' className='mappingTable'>
           <thead>
             <tr>
               <th>Mapping</th>
-              <th class='edit'>Edit</th>
+              <th className='edit'>Edit</th>
             </tr>
           </thead>
           <tbody>
             <MappingList list={this.state.list} />
-            <InputNewMapping />
-          </tbody>
 
+          </tbody>
+          <tfoot>
+            <InputNewMapping />
+          </tfoot>
         </table>
 
       </div>

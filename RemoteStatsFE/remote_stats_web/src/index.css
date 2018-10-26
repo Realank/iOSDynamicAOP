@@ -117,8 +117,16 @@ input{
 
 }
 
-tr:last-child{
+tfoot{
   background-color: rgba(40, 44, 52, 0.04);
+}
+
+tfoot td:first-child{
+  border-left: 2px solid rgba(55, 146, 255, 0.53);
+}
+
+tfoot td:last-child{
+  border-right: 2px solid rgba(55, 146, 255, 0.53);
 }
 
 .subRow .add{
@@ -139,5 +147,6 @@ tr:last-child{
 
 .filter {
   display: block;
-
+  margin-bottom: 10px;
+  padding: 0;
 }
