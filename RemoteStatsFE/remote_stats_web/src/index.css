@@ -106,7 +106,7 @@ input{
 }
 
 .subRow{
-  margin: 0px 10px 0px 10px;
+  margin: 0px 10px 1px 10px;
   padding: 5px;
   background-color: rgba(0, 183, 255, 0.2);
   display: flex;
@@ -114,7 +114,7 @@ input{
 
 .subRow h4{
   margin:2px;
-
+  font-size: 14px;
 }
 
 tfoot{
