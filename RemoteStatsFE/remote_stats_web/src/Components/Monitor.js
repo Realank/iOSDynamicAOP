@@ -5,9 +5,7 @@ import MappingList from './MappingList'
 
 class Monitor extends Component {
   componentDidMount () {
-    setTimeout(() => {
-      this.props.reload()
-    }, 3000)
+    this.props.reload()
   }
   render () {
     return (

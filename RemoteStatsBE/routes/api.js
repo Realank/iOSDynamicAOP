@@ -23,7 +23,7 @@ router.post('/upload', function (req, res, next) {
     console.log('类型判读通过')
     db.add(className, methodName, (success) => {
       putHeader(res)
-      res.send({staus: success ? 'success' : 'failed'})
+      res.send({status: success ? 'success' : 'failed'})
     })
   }
 })
@@ -38,7 +38,7 @@ router.post('/remove', function (req, res, next) {
     db.remove(className, methodName, (success) => {
       console.log('remove success in api')
       putHeader(res)
-      res.send({staus: success ? 'success' : 'failed'})
+      res.send({status: success ? 'success' : 'failed'})
     })
   }
 })

@@ -8,12 +8,11 @@ import Monitor from './Components/Monitor'
 
 const persistedState = {
   list: [
-    {className: 'ViewController', methodName: 'viewDidAppear:', eventCode: 'XCXQ_xxx1', mark: 'debug', collectDetail: true, filterList: [{key: 'phone', content: '18630982942'}, {key: 'device', content: 'sdfsdf-gsg-345ds-dfgf'}]},
-    {className: 'UIViewController', methodName: 'viewDidAppear:', eventCode: 'XCXQ_xxx2', mark: 'debug', collectDetail: false}
+
   ],
   newMapping: {
-    filterList: [{key: 'phone', content: '18630982943'}, {key: 'device', content: 'sdfsdfgf'}]
-  }
+  },
+  loading: true
 }
 
 const fetchSuccess = (list) => {
@@ -36,8 +35,21 @@ const fetchList = () => {
     if (json && json.status === 'success' && json.monitor) {
       store.dispatch(fetchSuccess(json.monitor))
     }
-  }, (error) => {
-    store.dispatch(fetchFailed(error))
+  })
+}
+
+const upload = (newMapping) => {
+  console.log('upload:' + JSON.stringify(newMapping))
+  fetch('http://www.realank.com:3000/api/upload', {
+    method: 'post',
+    mode: 'no-cors',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newMapping)
+  }).then((res) => {
+    fetchList()
   })
 }
 
@@ -55,6 +67,7 @@ const reducer = (state = persistedState, action) => {
   let newMapping = {...newState.newMapping}
   switch (action.type) {
     case 'AddNew':
+      upload(newState.newMapping)
       return newState
     case 'AddFilter':
       if (validString(newState.newMapping.inputing_filter_key) && validString(newState.newMapping.inputing_filter_content)) {
@@ -91,7 +104,8 @@ const reducer = (state = persistedState, action) => {
       return newState
     case 'FetchSuccess':
       return {
-        list: action.content
+        list: action.content,
+        loading: false
       }
     case 'FetchFailed':
       return newState

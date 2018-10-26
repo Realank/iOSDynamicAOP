@@ -69,10 +69,10 @@ const mapDispatchToProps = {
 
 const ConnectedMappingItem = connect(null, mapDispatchToProps)(MappingItem)
 
-export default class MappingList extends Component {
+class MappingList extends Component {
   render () {
     let renderList = null
-    if (this.props.list === null) {
+    if (this.props.loading) {
       renderList = <Waiting />
     } else if (this.props.list.length === 0) {
       renderList = <Empty />
@@ -92,3 +92,11 @@ export default class MappingList extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    loading: state.loading
+  }
+}
+
+export default connect(mapStateToProps)(MappingList)
