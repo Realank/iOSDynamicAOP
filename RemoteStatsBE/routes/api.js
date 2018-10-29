@@ -16,20 +16,37 @@ router.get('/list', function (req, res, next) {
   })
 })
 
+function keyWordsTest (string, allowBlank = false, addtionalChar = '') {
+  if (!allowBlank) {
+    if (!string || string.length === 0) {
+      return false
+    }
+  }
+  var keywordsPattern = new RegExp('/^[a-zA-Z_][\\w_' + addtionalChar + ']{0,50}$/')
+
+  return keywordsPattern.test(string)
+}
+
 router.post('/upload', function (req, res, next) {
+  putHeader(res)
+
   let mapping = req.body
   let className = mapping.className
   let methodName = mapping.methodName
   let eventCode = mapping.eventCode
   let mark = mapping.mark
-  let collectDetail = mapping.collectDetail
+  let collectDetail = mapping.collectDetail === true
+  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !keyWordsTest(mark, true)) {
+    res.send({status: 'failed', msg: 'wrong input'})
+    return
+  }
+
   if (className && methodName && eventCode && className.length > 0 && methodName.length > 0 && eventCode.length > 0) {
     let newMapping = {
-      className, methodName, eventCode, mark, collectDetail, filterList: mapping.filterList
+      className, methodName, eventCode, mark, collectDetail, filterList: mapping.filterList.filter((item) => { return keyWordsTest(item.key) && keyWordsTest(item.content) })
     }
     console.log('类型判读通过')
     db.add(newMapping, (success) => {
-      putHeader(res)
       if (success) {
         res.send({status: 'success'})
       } else {
@@ -38,7 +55,6 @@ router.post('/upload', function (req, res, next) {
     })
   } else {
     console.log('类型判断失败')
-    putHeader(res)
     res.send({status: 'failed', msg: 'Please fill blanks'})
   }
 })

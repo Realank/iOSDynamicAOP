@@ -44,7 +44,7 @@ class InputNewMapping extends Component {
             </div>
             <div className='sameWidth'>
               <h4 className='desc'>Collect detail:</h4>
-              <input type='checkbox' id='collectDetail' name='collectDetail' checked={this.props.newMapping ? this.props.newMapping.collectDetail : false} onChange={this.handleInputChange.bind(this)} />
+              <input type='checkbox' id='collectDetail' name='collectDetail' checked={this.props.newMapping ? this.props.newMapping.collectDetail === true : false} onChange={this.handleInputChange.bind(this)} />
             </div>
 
           </div>

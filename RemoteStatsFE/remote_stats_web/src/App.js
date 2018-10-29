@@ -57,6 +57,35 @@ const fetchList = () => {
 
 const upload = (newMapping) => {
   console.log('upload:' + JSON.stringify(newMapping))
+  // safety check
+  if (!newMapping) {
+    alert('Error: fill blanks')
+    return
+  }
+
+  var keywordsPattern = new RegExp(/^[a-zA-Z_][\w_]{0,50}$/)
+
+  if (!newMapping.className || !keywordsPattern.test(newMapping.className)) {
+    alert('Error: wrong class name ')
+    return
+  }
+
+  var methodPattern = new RegExp(/^[a-zA-Z_][\w_:]{0,50}$/)
+  if (!newMapping.methodName || !methodPattern.test(newMapping.methodName)) {
+    alert('Error: wrong method name')
+    return
+  }
+
+  if (!newMapping.eventCode || !keywordsPattern.test(newMapping.eventCode)) {
+    alert('Error: wrong event code')
+    return
+  }
+
+  if (!keywordsPattern.test(newMapping.mark)) {
+    alert('Error: wrong mark')
+    return
+  }
+
   const mapping = {
     className: newMapping.className,
     methodName: newMapping.methodName,
@@ -84,7 +113,7 @@ const upload = (newMapping) => {
       if (json && json.status === 'success') {
         fetchList()
       } else if (json && json.status === 'failed') {
-        alert('Error:' + json.msg)
+        alert('Error: ' + json.msg)
       }
     }
   )
