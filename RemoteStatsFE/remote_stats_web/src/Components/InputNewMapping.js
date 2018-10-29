@@ -44,7 +44,7 @@ class InputNewMapping extends Component {
             </div>
             <div className='sameWidth'>
               <h4 className='desc'>Collect detail:</h4>
-              <input type='checkbox' id='collectDetail' name='collectDetail' onChange={this.handleInputChange.bind(this)} />
+              <input type='checkbox' id='collectDetail' name='collectDetail' checked={this.props.newMapping ? this.props.newMapping.collectDetail === true : false} onChange={this.handleInputChange.bind(this)} />
             </div>
 
           </div>
@@ -66,7 +66,7 @@ class InputNewMapping extends Component {
           </div>
         </td>
         <td>
-          <button className='add' onClick={this.props.addNewMapping.bind(this, {})}>+</button>
+          <button className='add' onClick={this.props.addNewMapping.bind(this)}>+</button>
         </td>
       </tr>
     )
@@ -80,10 +80,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  addNewMapping: (mapping) => ({
+  addNewMapping: () => ({
     type: 'AddNew'
   }),
-  addNewFilter: (filter) => ({
+  addNewFilter: () => ({
     type: 'AddFilter'
   }),
   inputTF: (item) => ({
