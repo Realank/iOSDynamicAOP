@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import FilterList from './FilterList'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class Waiting extends Component {
   render () {
