@@ -22,7 +22,8 @@ function keyWordsTest (string, allowBlank = false, addtionalChar = '') {
       return false
     }
   }
-  var keywordsPattern = new RegExp('/^[a-zA-Z_][\\w_' + addtionalChar + ']{0,50}$/')
+  const regExp = '^[a-zA-Z_][\\w_' + addtionalChar + ']{0,50}$'
+  var keywordsPattern = new RegExp(regExp)
 
   return keywordsPattern.test(string)
 }
@@ -36,27 +37,27 @@ router.post('/upload', function (req, res, next) {
   let eventCode = mapping.eventCode
   let mark = mapping.mark
   let collectDetail = mapping.collectDetail === true
+
   if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !keyWordsTest(mark, true)) {
     res.send({status: 'failed', msg: 'wrong input'})
     return
   }
-
-  if (className && methodName && eventCode && className.length > 0 && methodName.length > 0 && eventCode.length > 0) {
-    let newMapping = {
-      className, methodName, eventCode, mark, collectDetail, filterList: mapping.filterList.filter((item) => { return keyWordsTest(item.key) && keyWordsTest(item.content) })
-    }
-    console.log('类型判读通过')
-    db.add(newMapping, (success) => {
-      if (success) {
-        res.send({status: 'success'})
-      } else {
-        res.send({status: 'failed', msg: 'DB error'})
-      }
-    })
-  } else {
-    console.log('类型判断失败')
-    res.send({status: 'failed', msg: 'Please fill blanks'})
+  let newMapping = {
+    className,
+    methodName,
+    eventCode,
+    mark,
+    collectDetail,
+    filterList: mapping.filterList ? mapping.filterList.filter((item) => { return keyWordsTest(item.key) && keyWordsTest(item.content) }) : []
   }
+  console.log('类型判断通过')
+  db.add(newMapping, (success) => {
+    if (success) {
+      res.send({status: 'success'})
+    } else {
+      res.send({status: 'failed', msg: 'DB error'})
+    }
+  })
 })
 
 router.post('/remove', function (req, res, next) {

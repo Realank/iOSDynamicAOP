@@ -55,6 +55,18 @@ const fetchList = () => {
     })
 }
 
+function keyWordsTest (string, allowBlank = false, addtionalChar = '') {
+  if (!allowBlank) {
+    if (!string || string.length === 0) {
+      return false
+    }
+  }
+  const regExp = '^[a-zA-Z_][\\w_' + addtionalChar + ']{0,50}$'
+  var keywordsPattern = new RegExp(regExp)
+
+  return keywordsPattern.test(string)
+}
+
 const upload = (newMapping) => {
   console.log('upload:' + JSON.stringify(newMapping))
   // safety check
@@ -63,25 +75,22 @@ const upload = (newMapping) => {
     return
   }
 
-  var keywordsPattern = new RegExp(/^[a-zA-Z_][\w_]{0,50}$/)
-
-  if (!newMapping.className || !keywordsPattern.test(newMapping.className)) {
+  if (!keyWordsTest(newMapping.className)) {
     alert('Error: wrong class name ')
     return
   }
 
-  var methodPattern = new RegExp(/^[a-zA-Z_][\w_:]{0,50}$/)
-  if (!newMapping.methodName || !methodPattern.test(newMapping.methodName)) {
+  if (!keyWordsTest(newMapping.methodName, false, ':')) {
     alert('Error: wrong method name')
     return
   }
 
-  if (!newMapping.eventCode || !keywordsPattern.test(newMapping.eventCode)) {
+  if (!keyWordsTest(newMapping.eventCode)) {
     alert('Error: wrong event code')
     return
   }
 
-  if (!keywordsPattern.test(newMapping.mark)) {
+  if (!keyWordsTest(newMapping.mark, true)) {
     alert('Error: wrong mark')
     return
   }
@@ -104,7 +113,7 @@ const upload = (newMapping) => {
   }).then((res) => {
     if (res.status !== 200) {
       // error
-      store.dispatch(fetchFailed('Upload error ' + res.status))
+      store.dispatch(fetchFailed('Error: ' + res.status))
     } else {
       return res.json()
     }
@@ -155,7 +164,7 @@ const reducer = (state = persistedState, action) => {
       upload(newState.newMapping)
       return newState
     case 'AddFilter':
-      if (validString(newState.newMapping.inputing_filter_key) && validString(newState.newMapping.inputing_filter_content)) {
+      if (keyWordsTest(newState.newMapping.inputing_filter_key) && keyWordsTest(newState.newMapping.inputing_filter_content)) {
         let newMapping = {...newState.newMapping}
         let oldFilterList = newMapping.filterList
         if (!oldFilterList) {
@@ -168,8 +177,11 @@ const reducer = (state = persistedState, action) => {
         newState.newMapping = newMapping
         console.log('added filter')
         return newState
+      } else {
+        alert('wrong filter')
+        return newState
       }
-      return newState
+
     case 'Input':
       newMapping[action.content.name] = action.content.value
       newState.newMapping = newMapping
