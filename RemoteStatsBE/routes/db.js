@@ -1,19 +1,25 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var mappingSchema = new Schema({
+let mongoose = require('mongoose')
+let Schema = mongoose.Schema
+let mappingSchema = new Schema({
   className: String,
-  methodName: String
+  methodName: String,
+  eventCode: String,
+  mark: String,
+  collectDetail: Boolean,
+  filterList: [
+    {key: String, content: String}
+  ]
 })
 function fetch (cb) {
-  mongoose.connect('mongodb://127.0.0.1:27017/mapping', { useNewUrlParser: true }, (err) => {
+  mongoose.connect('mongodb://127.0.0.1:27017/mappings', { useNewUrlParser: true }, (err) => {
     if (err) {
       console.log('连接数据库失败' + err)
       cb([])
     } else {
       console.log('连接成功')
 
-      var MappingModel = mongoose.model('MappingModel', mappingSchema)
-      // var doc = new MappingModel()
+      let MappingModel = mongoose.model('MappingModel', mappingSchema)
+      // let doc = new MappingModel()
       MappingModel.find((err, docs) => {
         mongoose.disconnect()
         if (err) {
@@ -27,15 +33,16 @@ function fetch (cb) {
   })
 }
 
-function add (className, methodName, cb) {
-  mongoose.connect('mongodb://127.0.0.1/mapping', { useNewUrlParser: true }, (err) => {
+function add (newMapping, cb) {
+  mongoose.connect('mongodb://127.0.0.1/mappings', { useNewUrlParser: true }, (err) => {
     if (err) {
       console.log('连接数据库失败')
       cb(false)
     } else {
       console.log('连接成功')
-      var MappingModel = mongoose.model('MappingModel', mappingSchema)
-      var doc = new MappingModel({className, methodName})
+      let MappingModel = mongoose.model('MappingModel', mappingSchema)
+      console.log('insert new mapping ' + JSON.stringify(newMapping))
+      let doc = new MappingModel(newMapping)
       doc.save(function (err, doc) {
         mongoose.disconnect()
         if (err) {
@@ -49,15 +56,15 @@ function add (className, methodName, cb) {
   })
 }
 
-function remove (className, methodName, cb) {
-  mongoose.connect('mongodb://127.0.0.1/mapping', { useNewUrlParser: true }, (err) => {
+function remove (existMapping, cb) {
+  mongoose.connect('mongodb://127.0.0.1/mappings', { useNewUrlParser: true }, (err) => {
     if (err) {
       console.log('连接数据库失败')
       cb(false)
     } else {
       console.log('连接成功')
-      var MappingModel = mongoose.model('MappingModel', mappingSchema)
-      MappingModel.findOneAndDelete({className, methodName}, (err, doc) => {
+      let MappingModel = mongoose.model('MappingModel', mappingSchema)
+      MappingModel.findOneAndDelete({className: existMapping.className, methodName: existMapping.methodName}, (err, doc) => {
         cb(!err)
       })
     }

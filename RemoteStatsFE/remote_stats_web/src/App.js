@@ -6,6 +6,9 @@ import { createStore, applyMiddleware } from 'redux'
 // import thunk from 'redux-thunk'
 import Monitor from './Components/Monitor'
 
+const debug = 1
+const baseUrl = debug ? 'http://localhost:3000/' : 'http://www.realank.com:3000/'
+
 const persistedState = {
   list: [
 
@@ -30,26 +33,79 @@ const fetchFailed = (err) => {
 
 const fetchList = () => {
   console.log('fetchList')
-  fetch('http://www.realank.com:3000/api/list').then((res) => res.json()).then((json) => {
-    console.log('fetch success ' + JSON.stringify(json))
-    if (json && json.status === 'success' && json.monitor) {
-      store.dispatch(fetchSuccess(json.monitor))
-    }
-  })
+  fetch(baseUrl + 'api/list').then(
+    (res) => {
+      if (res.status !== 200) {
+        // error
+        store.dispatch(fetchFailed('Load list error ' + res.status))
+      } else {
+        return res.json()
+      }
+    }).then(
+    (json) => {
+      console.log('fetch success ' + JSON.stringify(json))
+      if (json && json.status === 'success' && json.monitor) {
+        store.dispatch(fetchSuccess(json.monitor))
+      } else {
+        store.dispatch(fetchFailed('Parse list error'))
+      }
+    }).catch(
+    (err) => {
+      store.dispatch(fetchFailed('Catch error ' + err))
+    })
 }
 
 const upload = (newMapping) => {
   console.log('upload:' + JSON.stringify(newMapping))
-  fetch('http://www.realank.com:3000/api/upload', {
+  const mapping = {
+    className: newMapping.className,
+    methodName: newMapping.methodName,
+    eventCode: newMapping.eventCode,
+    mark: newMapping.mark,
+    collectDetail: newMapping.collectDetail,
+    filterList: newMapping.filterList
+  }
+  fetch(baseUrl + 'api/upload', {
     method: 'post',
-    mode: 'no-cors',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json;charset=UTF-8'
     },
-    body: JSON.stringify(newMapping)
+    body: JSON.stringify(mapping)
   }).then((res) => {
-    fetchList()
+    if (res.status !== 200) {
+      // error
+      store.dispatch(fetchFailed('Upload error ' + res.status))
+    } else {
+      return res.json()
+    }
+  }).then(
+    (json) => {
+      if (json && json.status === 'success') {
+        fetchList()
+      } else if (json && json.status === 'failed') {
+        alert('Error:' + json.msg)
+      }
+    }
+  )
+}
+
+const remove = (existMapping) => {
+  console.log('remove:' + JSON.stringify(existMapping))
+  fetch(baseUrl + 'api/remove', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
+    body: JSON.stringify({className: existMapping.className, methodName: existMapping.methodName})
+  }).then((res) => {
+    if (res.status !== 200) {
+      // error
+      store.dispatch(fetchFailed('Remove error ' + res.status))
+    } else {
+      fetchList()
+    }
   })
 }
 
@@ -90,6 +146,7 @@ const reducer = (state = persistedState, action) => {
       newState.newMapping = newMapping
       return newState
     case 'Remove':
+      remove(action.content)
       return newState
     case 'RemoveFilter':
       let oldFilterList = newMapping.filterList
@@ -108,6 +165,8 @@ const reducer = (state = persistedState, action) => {
         loading: false
       }
     case 'FetchFailed':
+      console.log('fetch failed' + action.content)
+      alert(action.content)
       return newState
     default:
       return newState

@@ -1,11 +1,13 @@
-var express = require('express')
-var router = express.Router()
-var db = require('./db.js')
+let express = require('express')
+let cors = require('cors')
+let router = express.Router()
+let db = require('./db.js')
 
+router.use(cors())
 /* GET users listing. */
 router.get('/list', function (req, res, next) {
   db.fetch((result) => {
-    var mapping = result
+    let mapping = result
     putHeader(res)
     res.send(JSON.stringify({
       status: 'success',
@@ -15,27 +17,40 @@ router.get('/list', function (req, res, next) {
 })
 
 router.post('/upload', function (req, res, next) {
-  var mapping = req.body
-
-  var className = mapping.className
-  var methodName = mapping.methodName
-  if (className.length > 0 && methodName.length > 0) {
+  let mapping = req.body
+  let className = mapping.className
+  let methodName = mapping.methodName
+  let eventCode = mapping.eventCode
+  let mark = mapping.mark
+  let collectDetail = mapping.collectDetail
+  if (className && methodName && eventCode && className.length > 0 && methodName.length > 0 && eventCode.length > 0) {
+    let newMapping = {
+      className, methodName, eventCode, mark, collectDetail, filterList: mapping.filterList
+    }
     console.log('类型判读通过')
-    db.add(className, methodName, (success) => {
+    db.add(newMapping, (success) => {
       putHeader(res)
-      res.send({status: success ? 'success' : 'failed'})
+      if (success) {
+        res.send({status: 'success'})
+      } else {
+        res.send({status: 'failed', msg: 'DB error'})
+      }
     })
+  } else {
+    console.log('类型判断失败')
+    putHeader(res)
+    res.send({status: 'failed', msg: 'Please fill blanks'})
   }
 })
 
 router.post('/remove', function (req, res, next) {
-  var mapping = req.body
+  let mapping = req.body
 
-  var className = mapping.className
-  var methodName = mapping.methodName
+  let className = mapping.className
+  let methodName = mapping.methodName
   if (className.length > 0 && methodName.length > 0) {
     console.log('类型判读通过')
-    db.remove(className, methodName, (success) => {
+    db.remove({className, methodName}, (success) => {
       console.log('remove success in api')
       putHeader(res)
       res.send({status: success ? 'success' : 'failed'})
