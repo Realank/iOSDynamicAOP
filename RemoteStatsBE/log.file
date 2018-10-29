@@ -1,0 +1,58 @@
+nohup: ignoring input
+
+> remotestatsbe@0.0.0 start /root/iOSDynamicAOP/RemoteStatsBE
+> node ./bin/www
+
+连接数据库失败MongoNetworkError: failed to connect to server [127.0.0.1:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]
+[0mGET /api/list [36m304 [0m18.975 ms - -[0m
+连接数据库失败MongoNetworkError: failed to connect to server [127.0.0.1:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]
+[0mGET /api/list [36m304 [0m2.984 ms - -[0m
+连接数据库失败MongoNetworkError: failed to connect to server [127.0.0.1:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017]
+[0mGET /api/list [36m304 [0m3.335 ms - -[0m
+连接成功
+[0mGET /api/list [32m200 [0m33.027 ms - 168[0m
+连接成功
+[0mGET /api/list [36m304 [0m6.575 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m5.361 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m5.577 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.298 ms - -[0m
+[0mGET / [33m404 [0m7.763 ms - 1182[0m
+连接成功
+[0mGET /api/list [36m304 [0m165.449 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.203 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.222 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.103 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.287 ms - -[0m
+[0mOPTIONS /api/upload [32m204 [0m0.709 ms - 0[0m
+类型判断通过
+连接成功
+insert new mapping {"className":"das","methodName":"asdf","eventCode":"asdf","collectDetail":false,"filterList":[]}
+[0mPOST /api/upload [32m200 [0m33.009 ms - 20[0m
+连接成功
+[0mGET /api/list [32m200 [0m4.551 ms - 306[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.252 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m6.751 ms - -[0m
+[0mOPTIONS /api/upload [32m204 [0m0.186 ms - 0[0m
+类型判断通过
+连接成功
+insert new mapping {"className":"asdf","methodName":"asf","eventCode":"asf","mark":"asf","collectDetail":true,"filterList":[{"key":"sdf","content":"asfd"}]}
+[0mPOST /api/upload [32m200 [0m7.911 ms - 20[0m
+连接成功
+[0mGET /api/list [32m200 [0m4.895 ms - 518[0m
+连接成功
+[0mGET /api/list [36m304 [0m10.555 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m4.870 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m5.038 ms - -[0m
+连接成功
+[0mGET /api/list [36m304 [0m6.332 ms - -[0m
