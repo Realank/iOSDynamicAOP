@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux'
 // import thunk from 'redux-thunk'
 import Monitor from './Components/Monitor'
 
-const debug = 1
+const debug = 0
 const baseUrl = debug ? 'http://localhost:3000/' : 'http://www.realank.com:3000/'
 
 const persistedState = {
