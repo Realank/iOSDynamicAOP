@@ -67,6 +67,18 @@ function keyWordsTest (string, allowBlank = false, addtionalChar = '') {
   return keywordsPattern.test(string)
 }
 
+function charContentTest (string, allowBlank = false, addtionalChar = '') {
+  if (!allowBlank) {
+    if (!string || string.length === 0) {
+      return false
+    }
+  }
+  const regExp = '^[\\w_' + addtionalChar + ']{0,50}$'
+  var keywordsPattern = new RegExp(regExp)
+
+  return keywordsPattern.test(string)
+}
+
 const upload = (newMapping) => {
   console.log('upload:' + JSON.stringify(newMapping))
   // safety check
@@ -90,7 +102,7 @@ const upload = (newMapping) => {
     return
   }
 
-  if (!keyWordsTest(newMapping.mark, true)) {
+  if (!charContentTest(newMapping.mark, true)) {
     alert('Error: wrong mark')
     return
   }
@@ -164,7 +176,7 @@ const reducer = (state = persistedState, action) => {
       upload(newState.newMapping)
       return newState
     case 'AddFilter':
-      if (keyWordsTest(newState.newMapping.inputing_filter_key) && keyWordsTest(newState.newMapping.inputing_filter_content)) {
+      if (keyWordsTest(newState.newMapping.inputing_filter_key) && charContentTest(newState.newMapping.inputing_filter_content)) {
         let newMapping = {...newState.newMapping}
         let oldFilterList = newMapping.filterList
         if (!oldFilterList) {

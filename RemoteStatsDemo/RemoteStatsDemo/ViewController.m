@@ -9,14 +9,16 @@
 #import "ViewController.h"
 #include "DynamicAOPManager.h"
 #import "TableViewController.h"
-#import <objc/runtime.h>
-#import <objc/message.h>
-#import "Aspects.h"
+#import "DynamicAOPManager.h"
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
+
++ (void)load{
+    [[DynamicAOPManager sharedInstance] runAOP];
+}
 
 static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     //ilILB@v
@@ -52,24 +54,24 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     
     
     TableViewController* vc = [TableViewController new];
-    [vc aspect_hookSelector:@selector(tableView:cellForRowAtIndexPath:) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> info){
-        NSLog(@"%@",info.arguments);
-        NSInvocation* anInvocation = info.originalInvocation;
-        if(anInvocation.methodSignature.methodReturnLength)
-        {
-            if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
-                double callBackObject = 0;
-                [anInvocation getReturnValue:&callBackObject];
-                NSString* resultString = [NSString stringWithFormat:@"return:(double)%lf",callBackObject];
-                NSLog(@"%@",resultString);
-            }else{
-                void* callBackObject = 0;
-                [anInvocation getReturnValue:&callBackObject];
-                NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
-            }
-    
-        }
-    } error:NULL];
+//    [vc aspect_hookSelector:@selector(tableView:cellForRowAtIndexPath:) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> info){
+//        NSLog(@"%@",info.arguments);
+//        NSInvocation* anInvocation = info.originalInvocation;
+//        if(anInvocation.methodSignature.methodReturnLength)
+//        {
+//            if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
+//                double callBackObject = 0;
+//                [anInvocation getReturnValue:&callBackObject];
+//                NSString* resultString = [NSString stringWithFormat:@"return:(double)%lf",callBackObject];
+//                NSLog(@"%@",resultString);
+//            }else{
+//                void* callBackObject = 0;
+//                [anInvocation getReturnValue:&callBackObject];
+//                NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
+//            }
+//
+//        }
+//    } error:NULL];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.navigationController pushViewController:vc animated:YES];
     });

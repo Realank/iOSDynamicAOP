@@ -7,7 +7,8 @@
 //
 
 #import "DynamicAOPManager.h"
-#import "DynamicAOP.h"
+#import "Aspects.h"
+#import <objc/runtime.h>
 @interface DynamicAOPManager ()
 
 @property (nonatomic, strong) NSArray<NSDictionary*>* aopMapping;
@@ -92,6 +93,29 @@
     }
 }
 
+static NSString* _printReturnValue(void* returnValue,NSString* returnType){
+    //ilILB@v
+    NSString* returnString = @"";
+    if (returnType.length == 1 && [@"ilIL" containsString:returnType]) {
+        returnString = [NSString stringWithFormat:@"return:(%@)%ld",returnType,(long)returnValue];
+        NSLog(@"%@",returnString);
+    }else if ([returnType isEqualToString:@"B"]){
+        returnString = [NSString stringWithFormat:@"return:(BOOL)%d",(BOOL)returnValue];
+        NSLog(@"%@",returnString);
+    }else if ([returnType isEqualToString:@"@"]){
+        id obj = (__bridge id) returnValue;
+        returnString = [NSString stringWithFormat:@"return:(%@)%@",NSStringFromClass([obj class]),obj];
+        NSLog(@"%@",returnString);
+    }else if ([returnType isEqualToString:@"v"]){
+        returnString = @"return:(void)";
+        NSLog(@"%@",returnString);
+    }else{
+        returnString = [NSString stringWithFormat:@"return:(%@)unknown",returnType];
+        NSLog(@"%@",returnString);
+    }
+    return returnString;
+}
+
 - (void)runMapping{
     for (NSDictionary* mapping in _aopMapping) {
         if (![mapping isKindOfClass:[NSDictionary class]]) {
@@ -100,11 +124,44 @@
         NSString* className = mapping[@"className"];
         NSString* methodName = mapping[@"methodName"];
         if (className.length == 0 || methodName.length == 0) {
+            NSLog(@"不能监听方法-要监听的类名或方法名为空");
             continue;
         }
-        dynamicAopAddMonitor(className, methodName,^(NSArray* result){
-            NSLog(@"=result:%@",result);
-        });
+        NSString* methodUniqueKey = [NSString stringWithFormat:@"%@-%@",className,methodName];
+        Class clazz = NSClassFromString(className);
+        if (!clazz) {
+            NSLog(@"不能监听方法-要监听的类找不到 %@",methodUniqueKey);
+            continue;
+        }
+        SEL selector = NSSelectorFromString(methodName);
+        Method method = class_getInstanceMethod(clazz, selector);
+        if(!method){
+            NSLog(@"不能监听方法-方法找不到 %@",methodUniqueKey);
+            continue;
+        }
+        NSError* error = nil;
+        [clazz aspect_hookSelector:selector withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> info){
+            NSLog(@"%@",info.arguments);
+            NSInvocation* anInvocation = info.originalInvocation;
+            if(anInvocation.methodSignature.methodReturnLength)
+            {
+                if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
+                    double callBackObject = 0;
+                    [anInvocation getReturnValue:&callBackObject];
+                    NSString* resultString = [NSString stringWithFormat:@"return:(double)%lf",callBackObject];
+                    NSLog(@"%@",resultString);
+                }else{
+                    void* callBackObject = 0;
+                    [anInvocation getReturnValue:&callBackObject];
+                    NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
+                    NSLog(@"%@",resultString);
+                }
+                
+            }
+        } error:&error];
+        if (error) {
+            NSLog(@"mapping error for %@-%@",className,methodName);
+        }
     }
     
 }
