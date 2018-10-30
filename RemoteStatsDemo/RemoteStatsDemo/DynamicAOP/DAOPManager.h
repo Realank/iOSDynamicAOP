@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "DAOPProbe.h"
 #import "DAOPMapModel.h"
+
+typedef void (^DAOPResultCallback)(DAOPMapModel* mapModel,NSArray* resultArray);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DAOPManager : NSObject
@@ -27,13 +30,24 @@ NS_ASSUME_NONNULL_BEGIN
  then use these mapping info to run AOP mapping
  afterall use asyncDownloadAOPMapping to download new mapping info
 
+ @param resultBlock a callback to return AOP result, but if you set collectDetail to NO, it will return a empty array
  */
-- (void)runAOPWithResult:(ResultCallback)resultBlock;
+- (void)runAOPWithResult:(DAOPResultCallback)resultBlock;
 
-//methods to override
+//methods to override AOP abuse
 
 @property (nonatomic, strong) NSArray<DAOPMapModel*>* aopMapping;
 
+
+/**
+ **Must Override**
+ determine which mapping model should be monitored
+ you can add a black list in this method to avoid
+
+ @param mapModel a mapping model fetch from cache
+ @return return YES to monitor, otherwise to ignore
+ */
+- (BOOL)canMonitorThisMapping:(DAOPMapModel*)mapModel;
 /**
  read AOP mapping from rom in cacheFilePath, and refresh aopMapping
  */

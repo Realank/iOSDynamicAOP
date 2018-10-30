@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C4F91572188550B00A6EB3A /* CUSAOPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4F91562188550B00A6EB3A /* CUSAOPManager.m */; };
 		8C574FF0218806A600B1A3D7 /* DAOPMapModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C574FEF218806A600B1A3D7 /* DAOPMapModel.m */; };
 		8C575008218837D300B1A3D7 /* DAOPProbe.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C575007218837D300B1A3D7 /* DAOPProbe.m */; };
 		8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7842921748B9B00726241 /* AppDelegate.m */; };
@@ -21,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C4F91552188550B00A6EB3A /* CUSAOPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUSAOPManager.h; sourceTree = "<group>"; };
+		8C4F91562188550B00A6EB3A /* CUSAOPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CUSAOPManager.m; sourceTree = "<group>"; };
 		8C574FEE218806A600B1A3D7 /* DAOPMapModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DAOPMapModel.h; sourceTree = "<group>"; };
 		8C574FEF218806A600B1A3D7 /* DAOPMapModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DAOPMapModel.m; sourceTree = "<group>"; };
 		8C575006218837D300B1A3D7 /* DAOPProbe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DAOPProbe.h; sourceTree = "<group>"; };
@@ -93,6 +96,8 @@
 				8CE7842921748B9B00726241 /* AppDelegate.m */,
 				8CE7842B21748B9B00726241 /* ViewController.h */,
 				8CE7842C21748B9B00726241 /* ViewController.m */,
+				8C4F91552188550B00A6EB3A /* CUSAOPManager.h */,
+				8C4F91562188550B00A6EB3A /* CUSAOPManager.m */,
 				8CE784492176E8B400726241 /* TableViewController.h */,
 				8CE7844A2176E8B400726241 /* TableViewController.m */,
 				8CE7842E21748B9B00726241 /* Main.storyboard */,
@@ -180,6 +185,7 @@
 				8C574FF0218806A600B1A3D7 /* DAOPMapModel.m in Sources */,
 				8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */,
 				8C575008218837D300B1A3D7 /* DAOPProbe.m in Sources */,
+				8C4F91572188550B00A6EB3A /* CUSAOPManager.m in Sources */,
 				8CE7844B2176E8B400726241 /* TableViewController.m in Sources */,
 				8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */,
 			);

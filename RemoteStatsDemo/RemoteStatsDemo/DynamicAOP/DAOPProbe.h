@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-typedef void (^ResultCallback)(NSString* className, NSString* methodName,NSArray* resultArray);
+typedef void (^ResultCallback)(NSArray* resultArray);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DAOPProbe : NSObject
@@ -21,7 +21,16 @@ NS_ASSUME_NONNULL_BEGIN
  @param methodName method name
  @param resultBlock after this method invoked, this block will call back to return method arguments and return value
  */
-+ (void)runMappingOfClass:(NSString*)className andMethod:(NSString*)methodName withResult:(ResultCallback)resultBlock;
+
+/**
+ AOP mapping a single method
+
+ @param className class name
+ @param methodName method name
+ @param showResult whether to collect result
+ @param resultBlock after this method invoked, this block will call back to return method arguments and return value, it set showResult to NO, it will return a empty array
+ */
++ (void)runMappingOfClass:(NSString*)className andMethod:(NSString*)methodName showResult:(BOOL)showResult withResult:(ResultCallback)resultBlock;
 
 @end
 

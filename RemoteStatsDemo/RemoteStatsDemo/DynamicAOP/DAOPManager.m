@@ -28,19 +28,29 @@
     return self;
 }
 
-- (void)runAOPWithResult:(ResultCallback)resultBlock{
+- (BOOL)canMonitorThisMapping:(DAOPMapModel*)mapModel{
+    return NO;
+}
+
+- (void)runAOPWithResult:(DAOPResultCallback)resultBlock{
     
     static dispatch_once_t onceToken;
     __weak __typeof(self) weakSelf = self;
     dispatch_once(&onceToken, ^{
         [self readAOPMappingFromRom];
+        NSLog(@"===========埋点开始================");
         for (DAOPMapModel* mappingModel in weakSelf.aopMapping) {
-            [DAOPProbe runMappingOfClass:mappingModel.className andMethod:mappingModel.methodName withResult:^(NSString* className, NSString* methodName,NSArray *resultArray) {
+            if (![self canMonitorThisMapping:mappingModel]) {
+                NSLog(@"忽略监听方法 %@-%@",mappingModel.className,mappingModel.methodName);
+                continue;
+            }
+            [DAOPProbe runMappingOfClass:mappingModel.className andMethod:mappingModel.methodName showResult:mappingModel.collectDetail withResult:^(NSArray *resultArray) {
                 if (resultBlock) {
-                    resultBlock(className,methodName,resultArray);
+                    resultBlock(mappingModel,resultArray);
                 }
             }];
         }
+        NSLog(@"===========埋点结束================");
         [self asyncDownloadAOPMapping];
     });
     
@@ -75,7 +85,7 @@
                 }
             }
         }
-        NSLog(@"%@",jsonObject);
+        NSLog(@"网络更新埋点映射：%@",jsonObject);
     }];
     [task resume];
 }

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "DAOPManager.h"
+#import "CUSAOPManager.h"
 #import "TableViewController.h"
 @interface ViewController ()
 
@@ -16,8 +16,8 @@
 @implementation ViewController
 
 + (void)load{
-    [[DAOPManager sharedInstance] runAOPWithResult:^(NSString *className, NSString *methodName, NSArray *resultArray) {
-        NSLog(@"result:%@-%@\n%@",className,methodName,resultArray);
+    [[CUSAOPManager sharedInstance] runAOPWithResult:^(DAOPMapModel* mapModel, NSArray *resultArray) {
+        NSLog(@"result:%@-%@\n%@",mapModel.className,mapModel.methodName,resultArray);
     }];
 }
 
