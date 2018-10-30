@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "DynamicAOPManager.h"
+#import "DAOPManager.h"
 #import "TableViewController.h"
 @interface ViewController ()
 
@@ -16,7 +16,7 @@
 @implementation ViewController
 
 + (void)load{
-    [[DynamicAOPManager sharedInstance] runAOPWithResult:^(NSString *className, NSString *methodName, NSArray *resultArray) {
+    [[DAOPManager sharedInstance] runAOPWithResult:^(NSString *className, NSString *methodName, NSArray *resultArray) {
         NSLog(@"result:%@-%@\n%@",className,methodName,resultArray);
     }];
 }

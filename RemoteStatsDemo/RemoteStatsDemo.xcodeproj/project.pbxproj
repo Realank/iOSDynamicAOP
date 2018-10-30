@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C574FF0218806A600B1A3D7 /* DynamicAOPMappingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C574FEF218806A600B1A3D7 /* DynamicAOPMappingModel.m */; };
-		8C575008218837D300B1A3D7 /* DynamicAOPProbe.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C575007218837D300B1A3D7 /* DynamicAOPProbe.m */; };
+		8C574FF0218806A600B1A3D7 /* DAOPMapModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C574FEF218806A600B1A3D7 /* DAOPMapModel.m */; };
+		8C575008218837D300B1A3D7 /* DAOPProbe.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C575007218837D300B1A3D7 /* DAOPProbe.m */; };
 		8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7842921748B9B00726241 /* AppDelegate.m */; };
 		8CE7842D21748B9B00726241 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7842C21748B9B00726241 /* ViewController.m */; };
 		8CE7843021748B9B00726241 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7842E21748B9B00726241 /* Main.storyboard */; };
@@ -16,15 +16,15 @@
 		8CE7843521748B9C00726241 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7843321748B9C00726241 /* LaunchScreen.storyboard */; };
 		8CE7843821748B9C00726241 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7843721748B9C00726241 /* main.m */; };
 		8CE7844B2176E8B400726241 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7844A2176E8B400726241 /* TableViewController.m */; };
-		8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE78495217EEB5200726241 /* DynamicAOPManager.m */; };
+		8CE78496217EEB5200726241 /* DAOPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE78495217EEB5200726241 /* DAOPManager.m */; };
 		8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7DF1A2180703D00BDB555 /* Aspects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8C574FEE218806A600B1A3D7 /* DynamicAOPMappingModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPMappingModel.h; sourceTree = "<group>"; };
-		8C574FEF218806A600B1A3D7 /* DynamicAOPMappingModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPMappingModel.m; sourceTree = "<group>"; };
-		8C575006218837D300B1A3D7 /* DynamicAOPProbe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPProbe.h; sourceTree = "<group>"; };
-		8C575007218837D300B1A3D7 /* DynamicAOPProbe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPProbe.m; sourceTree = "<group>"; };
+		8C574FEE218806A600B1A3D7 /* DAOPMapModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DAOPMapModel.h; sourceTree = "<group>"; };
+		8C574FEF218806A600B1A3D7 /* DAOPMapModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DAOPMapModel.m; sourceTree = "<group>"; };
+		8C575006218837D300B1A3D7 /* DAOPProbe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DAOPProbe.h; sourceTree = "<group>"; };
+		8C575007218837D300B1A3D7 /* DAOPProbe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DAOPProbe.m; sourceTree = "<group>"; };
 		8CE7842521748B9B00726241 /* RemoteStatsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RemoteStatsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE7842821748B9B00726241 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8CE7842921748B9B00726241 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -37,8 +37,8 @@
 		8CE7843721748B9C00726241 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CE784492176E8B400726241 /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		8CE7844A2176E8B400726241 /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
-		8CE78494217EEB5200726241 /* DynamicAOPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPManager.h; sourceTree = "<group>"; };
-		8CE78495217EEB5200726241 /* DynamicAOPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPManager.m; sourceTree = "<group>"; };
+		8CE78494217EEB5200726241 /* DAOPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DAOPManager.h; sourceTree = "<group>"; };
+		8CE78495217EEB5200726241 /* DAOPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DAOPManager.m; sourceTree = "<group>"; };
 		8CF7DF192180703D00BDB555 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
 		8CF7DF1A2180703D00BDB555 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,12 +59,12 @@
 			children = (
 				8CF7DF192180703D00BDB555 /* Aspects.h */,
 				8CF7DF1A2180703D00BDB555 /* Aspects.m */,
-				8C575006218837D300B1A3D7 /* DynamicAOPProbe.h */,
-				8C575007218837D300B1A3D7 /* DynamicAOPProbe.m */,
-				8CE78494217EEB5200726241 /* DynamicAOPManager.h */,
-				8CE78495217EEB5200726241 /* DynamicAOPManager.m */,
-				8C574FEE218806A600B1A3D7 /* DynamicAOPMappingModel.h */,
-				8C574FEF218806A600B1A3D7 /* DynamicAOPMappingModel.m */,
+				8C575006218837D300B1A3D7 /* DAOPProbe.h */,
+				8C575007218837D300B1A3D7 /* DAOPProbe.m */,
+				8CE78494217EEB5200726241 /* DAOPManager.h */,
+				8CE78495217EEB5200726241 /* DAOPManager.m */,
+				8C574FEE218806A600B1A3D7 /* DAOPMapModel.h */,
+				8C574FEF218806A600B1A3D7 /* DAOPMapModel.m */,
 			);
 			path = DynamicAOP;
 			sourceTree = "<group>";
@@ -176,10 +176,10 @@
 			files = (
 				8CE7842D21748B9B00726241 /* ViewController.m in Sources */,
 				8CE7843821748B9C00726241 /* main.m in Sources */,
-				8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */,
-				8C574FF0218806A600B1A3D7 /* DynamicAOPMappingModel.m in Sources */,
+				8CE78496217EEB5200726241 /* DAOPManager.m in Sources */,
+				8C574FF0218806A600B1A3D7 /* DAOPMapModel.m in Sources */,
 				8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */,
-				8C575008218837D300B1A3D7 /* DynamicAOPProbe.m in Sources */,
+				8C575008218837D300B1A3D7 /* DAOPProbe.m in Sources */,
 				8CE7844B2176E8B400726241 /* TableViewController.m in Sources */,
 				8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */,
 			);

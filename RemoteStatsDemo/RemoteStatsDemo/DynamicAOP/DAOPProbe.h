@@ -1,5 +1,5 @@
 //
-//  DynamicAOPProbe.h
+//  DAOPProbe.h
 //  RemoteStatsDemo
 //
 //  Created by Realank on 2018/10/30.
@@ -12,7 +12,7 @@
 typedef void (^ResultCallback)(NSString* className, NSString* methodName,NSArray* resultArray);
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DynamicAOPProbe : NSObject
+@interface DAOPProbe : NSObject
 
 /**
  AOP mapping a single method

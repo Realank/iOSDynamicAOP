@@ -1,14 +1,14 @@
 //
-//  DynamicAOPManager.m
+//  DAOPManager.m
 //  RemoteStatsDemo
 //
 //  Created by Realank on 2018/10/23.
 //  Copyright © 2018 Realank. All rights reserved.
 //
 
-#import "DynamicAOPManager.h"
+#import "DAOPManager.h"
 
-@implementation DynamicAOPManager
+@implementation DAOPManager
 
 +(instancetype) sharedInstance {
     static dispatch_once_t pred;
@@ -34,8 +34,8 @@
     __weak __typeof(self) weakSelf = self;
     dispatch_once(&onceToken, ^{
         [self readAOPMappingFromRom];
-        for (DynamicAOPMappingModel* mappingModel in weakSelf.aopMapping) {
-            [DynamicAOPProbe runMappingOfClass:mappingModel.className andMethod:mappingModel.methodName withResult:^(NSString* className, NSString* methodName,NSArray *resultArray) {
+        for (DAOPMapModel* mappingModel in weakSelf.aopMapping) {
+            [DAOPProbe runMappingOfClass:mappingModel.className andMethod:mappingModel.methodName withResult:^(NSString* className, NSString* methodName,NSArray *resultArray) {
                 if (resultBlock) {
                     resultBlock(className,methodName,resultArray);
                 }
@@ -61,12 +61,12 @@
             NSMutableArray* mappingArray = [NSMutableArray array];
             if ([mappingRawArray isKindOfClass:[NSArray class]]) {
                 for (NSDictionary* mapping in mappingRawArray) {
-                    DynamicAOPMappingModel* mappingModel = [DynamicAOPMappingModel modelWithDict:mapping];
+                    DAOPMapModel* mappingModel = [DAOPMapModel modelWithDict:mapping];
                     [mappingArray addObject:mappingModel];
 
                 }
                 if (mappingArray.count) {
-                    NSData* cacheData = [DynamicAOPMappingModel convertMappingListToData:mappingArray];
+                    NSData* cacheData = [DAOPMapModel convertMappingListToData:mappingArray];
                     if (cacheData) {
                         [cacheData writeToFile:[weakSelf cacheFilePath] atomically:YES];
                     }
@@ -83,7 +83,7 @@
 - (void)readAOPMappingFromRom{
     if([[NSFileManager defaultManager] fileExistsAtPath:[self cacheFilePath]]){
         NSData* cachedData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
-        _aopMapping = [DynamicAOPMappingModel mappingListFromData:cachedData];
+        _aopMapping = [DAOPMapModel mappingListFromData:cachedData];
     }
 }
 

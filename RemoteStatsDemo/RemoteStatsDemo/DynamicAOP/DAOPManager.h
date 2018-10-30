@@ -1,5 +1,5 @@
 //
-//  DynamicAOPManager.h
+//  DAOPManager.h
 //  RemoteStatsDemo
 //
 //  Created by Realank on 2018/10/23.
@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DynamicAOPProbe.h"
-#import "DynamicAOPMappingModel.h"
+#import "DAOPProbe.h"
+#import "DAOPMapModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DynamicAOPManager : NSObject
+@interface DAOPManager : NSObject
 
 
 /**
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //methods to override
 
-@property (nonatomic, strong) NSArray<DynamicAOPMappingModel*>* aopMapping;
+@property (nonatomic, strong) NSArray<DAOPMapModel*>* aopMapping;
 
 /**
  read AOP mapping from rom in cacheFilePath, and refresh aopMapping

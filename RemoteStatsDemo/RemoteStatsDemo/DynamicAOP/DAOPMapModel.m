@@ -1,12 +1,12 @@
 //
-//  DynamicAOPMappingModel.m
+//  DAOPMapModel.m
 //  RemoteStatsDemo
 //
 //  Created by Realank on 2018/10/30.
 //  Copyright © 2018 Realank. All rights reserved.
 //
 
-#import "DynamicAOPMappingModel.h"
+#import "DAOPMapModel.h"
 
 BOOL keywordsTest(NSString* string){
     NSString *pattern = @"^[a-zA-Z_][\\w_]{0,50}$";
@@ -30,7 +30,7 @@ BOOL contentTest(NSString* string){
     return result != nil;
 }
 
-@implementation DynamicAOPMappingFilterModel
+@implementation DAOPMapFilterModel
 
 + (BOOL)supportsSecureCoding{
     return YES;
@@ -67,7 +67,7 @@ BOOL contentTest(NSString* string){
             NSLog(@"filter illegal");
             return nil;
         }
-        DynamicAOPMappingFilterModel* filterModel = [[DynamicAOPMappingFilterModel alloc] init];
+        DAOPMapFilterModel* filterModel = [[DAOPMapFilterModel alloc] init];
         filterModel.key = key;
         filterModel.content = content;
         return filterModel;
@@ -78,7 +78,7 @@ BOOL contentTest(NSString* string){
 
 @end
 
-@implementation DynamicAOPMappingModel
+@implementation DAOPMapModel
 
 + (BOOL)supportsSecureCoding{
     return YES;
@@ -96,10 +96,6 @@ BOOL contentTest(NSString* string){
         _mark = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"mark"];
         _collectDetail = [aDecoder decodeBoolForKey:@"collectDetail"];
         NSArray* filterListArr = [aDecoder decodeObjectForKey:@"filterList"];
-//        NSMutableArray* filterListArrM = [NSMutableArray arrayWithCapacity:filterListArr.count];
-//        for (NSData* filter in filterListArr) {
-//            DynamicAOPMappingFilterModel* filterModel = filter
-//        }
         _filterList = [filterListArr copy];
     }
     return self;
@@ -120,7 +116,7 @@ BOOL contentTest(NSString* string){
 }
 
 + (instancetype)modelWithData:(NSData *)data andError:(NSError * _Nullable __autoreleasing * _Nullable)errorP{
-    DynamicAOPMappingModel* mappingModel = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[DynamicAOPMappingModel class],[DynamicAOPMappingFilterModel class],[NSArray class], nil] fromData:data error:errorP];
+    DAOPMapModel* mappingModel = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[DAOPMapModel class],[DAOPMapFilterModel class],[NSArray class], nil] fromData:data error:errorP];
     return mappingModel;
 }
 
@@ -137,7 +133,7 @@ BOOL contentTest(NSString* string){
     NSArray* filterListArray = dict[@"filterList"];
     if (filterListArray && [filterListArray isKindOfClass:[NSArray class]]) {
         for (NSDictionary* filterDict in filterListArray) {
-            DynamicAOPMappingFilterModel* filterModel = [DynamicAOPMappingFilterModel modelWithDict:filterDict];
+            DAOPMapFilterModel* filterModel = [DAOPMapFilterModel modelWithDict:filterDict];
             if (filterModel) {
                 [array addObject:filterModel];
             }
@@ -146,7 +142,7 @@ BOOL contentTest(NSString* string){
     if (!keywordsTest(className) || !methodTest(methodName) || !keywordsTest(eventCode) || !contentTest(mark)) {
         return nil;
     }
-    DynamicAOPMappingModel* model = [[DynamicAOPMappingModel alloc] init];
+    DAOPMapModel* model = [[DAOPMapModel alloc] init];
     model.className = className;
     model.methodName = methodName;
     model.eventCode = eventCode;
@@ -156,9 +152,9 @@ BOOL contentTest(NSString* string){
     return model;
 }
 
-+ (NSData*)convertMappingListToData:(NSArray<DynamicAOPMappingModel*>*)mappingList{
++ (NSData*)convertMappingListToData:(NSArray<DAOPMapModel*>*)mappingList{
     NSMutableArray* mappingArray = [NSMutableArray arrayWithCapacity:mappingList.count];
-    for (DynamicAOPMappingModel* mapping in mappingList) {
+    for (DAOPMapModel* mapping in mappingList) {
         NSData* data = [mapping toArchivedDataWithError:nil];
         if (data) {
             [mappingArray addObject:data];
@@ -171,7 +167,7 @@ BOOL contentTest(NSString* string){
         return nil;
     }
 }
-+ (NSArray<DynamicAOPMappingModel*>*)mappingListFromData:(NSData*)data{
++ (NSArray<DAOPMapModel*>*)mappingListFromData:(NSData*)data{
     NSError* error = nil;
     NSArray* cachedArr = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSData class],[NSArray class], nil] fromData:data error:&error];
     if (error) {
@@ -180,7 +176,7 @@ BOOL contentTest(NSString* string){
     }else if (cachedArr && [cachedArr isKindOfClass:[NSArray class]]) {
         NSMutableArray* mappingArr = [NSMutableArray arrayWithCapacity:10];
         for (NSData* data in cachedArr) {
-            DynamicAOPMappingModel* mappingModel = [DynamicAOPMappingModel modelWithData:data andError:nil];
+            DAOPMapModel* mappingModel = [DAOPMapModel modelWithData:data andError:nil];
             if (mappingModel) {
                 [mappingArr addObject:mappingModel];
             }
