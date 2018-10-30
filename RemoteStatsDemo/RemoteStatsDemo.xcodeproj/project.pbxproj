@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C574FF0218806A600B1A3D7 /* DynamicAOPMappingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C574FEF218806A600B1A3D7 /* DynamicAOPMappingModel.m */; };
+		8C575008218837D300B1A3D7 /* DynamicAOPProbe.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C575007218837D300B1A3D7 /* DynamicAOPProbe.m */; };
 		8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7842921748B9B00726241 /* AppDelegate.m */; };
 		8CE7842D21748B9B00726241 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7842C21748B9B00726241 /* ViewController.m */; };
 		8CE7843021748B9B00726241 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7842E21748B9B00726241 /* Main.storyboard */; };
@@ -14,13 +16,15 @@
 		8CE7843521748B9C00726241 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CE7843321748B9C00726241 /* LaunchScreen.storyboard */; };
 		8CE7843821748B9C00726241 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7843721748B9C00726241 /* main.m */; };
 		8CE7844B2176E8B400726241 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7844A2176E8B400726241 /* TableViewController.m */; };
-		8CE7848C2178227D00726241 /* DynamicAOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7848B2178227D00726241 /* DynamicAOP.m */; };
 		8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE78495217EEB5200726241 /* DynamicAOPManager.m */; };
-		8CE8189421802DA2001EC631 /* NSObject+AOP.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE8189321802DA2001EC631 /* NSObject+AOP.m */; };
 		8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7DF1A2180703D00BDB555 /* Aspects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C574FEE218806A600B1A3D7 /* DynamicAOPMappingModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPMappingModel.h; sourceTree = "<group>"; };
+		8C574FEF218806A600B1A3D7 /* DynamicAOPMappingModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPMappingModel.m; sourceTree = "<group>"; };
+		8C575006218837D300B1A3D7 /* DynamicAOPProbe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPProbe.h; sourceTree = "<group>"; };
+		8C575007218837D300B1A3D7 /* DynamicAOPProbe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPProbe.m; sourceTree = "<group>"; };
 		8CE7842521748B9B00726241 /* RemoteStatsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RemoteStatsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CE7842821748B9B00726241 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8CE7842921748B9B00726241 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -33,12 +37,8 @@
 		8CE7843721748B9C00726241 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CE784492176E8B400726241 /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		8CE7844A2176E8B400726241 /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
-		8CE7848A2178227D00726241 /* DynamicAOP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicAOP.h; sourceTree = "<group>"; };
-		8CE7848B2178227D00726241 /* DynamicAOP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicAOP.m; sourceTree = "<group>"; };
 		8CE78494217EEB5200726241 /* DynamicAOPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicAOPManager.h; sourceTree = "<group>"; };
 		8CE78495217EEB5200726241 /* DynamicAOPManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicAOPManager.m; sourceTree = "<group>"; };
-		8CE8189221802DA2001EC631 /* NSObject+AOP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+AOP.h"; sourceTree = "<group>"; };
-		8CE8189321802DA2001EC631 /* NSObject+AOP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AOP.m"; sourceTree = "<group>"; };
 		8CF7DF192180703D00BDB555 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
 		8CF7DF1A2180703D00BDB555 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,6 +54,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C5750052188378600B1A3D7 /* DynamicAOP */ = {
+			isa = PBXGroup;
+			children = (
+				8CF7DF192180703D00BDB555 /* Aspects.h */,
+				8CF7DF1A2180703D00BDB555 /* Aspects.m */,
+				8C575006218837D300B1A3D7 /* DynamicAOPProbe.h */,
+				8C575007218837D300B1A3D7 /* DynamicAOPProbe.m */,
+				8CE78494217EEB5200726241 /* DynamicAOPManager.h */,
+				8CE78495217EEB5200726241 /* DynamicAOPManager.m */,
+				8C574FEE218806A600B1A3D7 /* DynamicAOPMappingModel.h */,
+				8C574FEF218806A600B1A3D7 /* DynamicAOPMappingModel.m */,
+			);
+			path = DynamicAOP;
+			sourceTree = "<group>";
+		};
 		8CE7841C21748B9A00726241 = {
 			isa = PBXGroup;
 			children = (
@@ -73,20 +88,13 @@
 		8CE7842721748B9B00726241 /* RemoteStatsDemo */ = {
 			isa = PBXGroup;
 			children = (
-				8CF7DF192180703D00BDB555 /* Aspects.h */,
-				8CF7DF1A2180703D00BDB555 /* Aspects.m */,
+				8C5750052188378600B1A3D7 /* DynamicAOP */,
 				8CE7842821748B9B00726241 /* AppDelegate.h */,
 				8CE7842921748B9B00726241 /* AppDelegate.m */,
 				8CE7842B21748B9B00726241 /* ViewController.h */,
 				8CE7842C21748B9B00726241 /* ViewController.m */,
 				8CE784492176E8B400726241 /* TableViewController.h */,
 				8CE7844A2176E8B400726241 /* TableViewController.m */,
-				8CE8189221802DA2001EC631 /* NSObject+AOP.h */,
-				8CE8189321802DA2001EC631 /* NSObject+AOP.m */,
-				8CE7848A2178227D00726241 /* DynamicAOP.h */,
-				8CE7848B2178227D00726241 /* DynamicAOP.m */,
-				8CE78494217EEB5200726241 /* DynamicAOPManager.h */,
-				8CE78495217EEB5200726241 /* DynamicAOPManager.m */,
 				8CE7842E21748B9B00726241 /* Main.storyboard */,
 				8CE7843121748B9C00726241 /* Assets.xcassets */,
 				8CE7843321748B9C00726241 /* LaunchScreen.storyboard */,
@@ -166,12 +174,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CE7848C2178227D00726241 /* DynamicAOP.m in Sources */,
 				8CE7842D21748B9B00726241 /* ViewController.m in Sources */,
 				8CE7843821748B9C00726241 /* main.m in Sources */,
-				8CE8189421802DA2001EC631 /* NSObject+AOP.m in Sources */,
 				8CE78496217EEB5200726241 /* DynamicAOPManager.m in Sources */,
+				8C574FF0218806A600B1A3D7 /* DynamicAOPMappingModel.m in Sources */,
 				8CE7842A21748B9B00726241 /* AppDelegate.m in Sources */,
+				8C575008218837D300B1A3D7 /* DynamicAOPProbe.m in Sources */,
 				8CE7844B2176E8B400726241 /* TableViewController.m in Sources */,
 				8CF7DF1B2180703D00BDB555 /* Aspects.m in Sources */,
 			);

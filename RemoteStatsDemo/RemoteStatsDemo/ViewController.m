@@ -7,9 +7,8 @@
 //
 
 #import "ViewController.h"
-#include "DynamicAOPManager.h"
-#import "TableViewController.h"
 #import "DynamicAOPManager.h"
+#import "TableViewController.h"
 @interface ViewController ()
 
 @end
@@ -17,8 +16,8 @@
 @implementation ViewController
 
 + (void)load{
-    [[DynamicAOPManager sharedInstance] runAOPWithResult:^(NSArray *resultArray) {
-        NSLog(@"result:%@",resultArray);
+    [[DynamicAOPManager sharedInstance] runAOPWithResult:^(NSString *className, NSString *methodName, NSArray *resultArray) {
+        NSLog(@"result:%@-%@\n%@",className,methodName,resultArray);
     }];
 }
 
@@ -43,17 +42,17 @@
 }
 
 - (int)abc:(int)is content:(NSString*)content num:(int)num{
-    NSLog(@"== abc %@ %d %@ %d",NSStringFromSelector(_cmd),is,content,num);
+    NSLog(@"abc %@ %d %@ %d",NSStringFromSelector(_cmd),is,content,num);
     return 314743647;
 }
 
 - (int)hij:(NSString*)content num:(int)num{
-    NSLog(@"== hij %@ %@ %d",NSStringFromSelector(_cmd),content,num);
+    NSLog(@"hij %@ %@ %d",NSStringFromSelector(_cmd),content,num);
     return 314743647;
 }
 
 - (double)def:(void(^)(int i,NSString* a))is num:(int)num{
-    NSLog(@"== def %@ %d",NSStringFromSelector(_cmd),num);
+    NSLog(@"def %@ %d",NSStringFromSelector(_cmd),num);
     is(883,@"dddd");
     return 0.2355657;
 }
