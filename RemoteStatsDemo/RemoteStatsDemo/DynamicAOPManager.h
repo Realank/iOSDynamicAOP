@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+typedef void (^ResultCallback)(NSArray* resultArray);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DynamicAOPManager : NSObject
 
 +(instancetype) sharedInstance;
 
-- (void)runAOP;
+- (void)runAOPWithResult:(ResultCallback)resultBlock;
 
 @end
 

@@ -12,7 +12,7 @@
 @interface DynamicAOPManager ()
 
 @property (nonatomic, strong) NSArray<NSDictionary*>* aopMapping;
-
+@property (nonatomic, strong) NSMutableDictionary* methodAndBlockMapping;
 @end
 
 @implementation DynamicAOPManager
@@ -35,12 +35,12 @@
     return self;
 }
 
-- (void)runAOP{
+- (void)runAOPWithResult:(ResultCallback)resultBlock{
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [self readAOPMappingFromRom];
-        [self runMapping];
+        [self runMappingWithResult:resultBlock];
         [self asyncDownloadAOPMapping];
     });
     
@@ -93,7 +93,7 @@
     }
 }
 
-static NSString* _printReturnValue(void* returnValue,NSString* returnType){
+NSString* _printReturnValue(void* returnValue,NSString* returnType){
     //ilILB@v
     NSString* returnString = @"";
     if (returnType.length == 1 && [@"ilIL" containsString:returnType]) {
@@ -116,7 +116,39 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
     return returnString;
 }
 
-- (void)runMapping{
+NSString* _printArgument(NSString* argumentType,id argument){
+    NSString* argumentString = @"";
+    if ([argumentType isEqualToString:@"i"] || [argumentType isEqualToString:@"I"] ) {
+        argumentString = [NSString stringWithFormat:@"param:(int)%@",argument];
+        NSLog(@"%@",argumentString);
+        return argumentString;
+    }else if ([argumentType isEqualToString:@"l"] || [argumentType isEqualToString:@"L"] ) {
+        argumentString = [NSString stringWithFormat:@"param:(long)%@",argument];
+        NSLog(@"%@",argumentString);
+        return argumentString;
+    }else if ([argumentType isEqualToString:@"B"]) {
+
+        argumentString = [NSString stringWithFormat:@"param:(BOOL)%@",argument ? @"YES":@"NO"];
+        NSLog(@"%@",argumentString);
+        return argumentString;
+    }else if ([argumentType isEqualToString:@"d"]) {
+        argumentString = [NSString stringWithFormat:@"param:(double)%@",argument];
+        NSLog(@"%@",argumentString);
+        return argumentString;
+    }else if ([argumentType isEqualToString:@"@"]) {
+        argumentString = [NSString stringWithFormat:@"param:(%@)%@",[argument class],argument];
+        NSLog(@"%@",argumentString);
+        return argumentString;
+    }else if ([argumentType isEqualToString:@"@?"]) {
+        argumentString = [NSString stringWithFormat:@"param:(block)%@",argument];
+        NSLog(@"%@",argumentString);
+        return argumentString;
+    }
+    return argumentString;
+}
+
+- (void)runMappingWithResult:(ResultCallback)resultBlock{
+    _methodAndBlockMapping = [NSMutableDictionary dictionaryWithCapacity:5];
     for (NSDictionary* mapping in _aopMapping) {
         if (![mapping isKindOfClass:[NSDictionary class]]) {
             continue;
@@ -140,9 +172,18 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
             continue;
         }
         NSError* error = nil;
+        __weak __typeof(self) weakSelf = self;
         [clazz aspect_hookSelector:selector withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> info){
-            NSLog(@"%@",info.arguments);
             NSInvocation* anInvocation = info.originalInvocation;
+            NSMethodSignature *methodSignature = [clazz instanceMethodSignatureForSelector:selector];
+            NSMutableArray* aopArray = [NSMutableArray arrayWithCapacity:10];
+            NSLog(@"===========start================");
+            for(int i = 0; i < info.arguments.count; i++){
+                NSString* argumentType = [NSString stringWithUTF8String:[methodSignature getArgumentTypeAtIndex:i+2]];
+                id argument = info.arguments[i];
+                [aopArray addObject:_printArgument(argumentType,argument)] ;
+            }
+            
             if(anInvocation.methodSignature.methodReturnLength)
             {
                 if ([[NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType] isEqualToString:@"d"]) {
@@ -150,17 +191,27 @@ static NSString* _printReturnValue(void* returnValue,NSString* returnType){
                     [anInvocation getReturnValue:&callBackObject];
                     NSString* resultString = [NSString stringWithFormat:@"return:(double)%lf",callBackObject];
                     NSLog(@"%@",resultString);
+                    [aopArray addObject:resultString];
                 }else{
                     void* callBackObject = 0;
                     [anInvocation getReturnValue:&callBackObject];
                     NSString* resultString = _printReturnValue(callBackObject, [NSString stringWithUTF8String:anInvocation.methodSignature.methodReturnType]);
-                    NSLog(@"%@",resultString);
+                    [aopArray addObject:resultString];
                 }
                 
+            }
+            NSLog(@"===========end================");
+            ResultCallback callBack = weakSelf.methodAndBlockMapping[methodUniqueKey];
+            if(callBack){
+                callBack([aopArray copy]);
             }
         } error:&error];
         if (error) {
             NSLog(@"mapping error for %@-%@",className,methodName);
+        }else{
+            if (resultBlock) {
+                _methodAndBlockMapping[methodUniqueKey] = resultBlock;
+            }
         }
     }
     

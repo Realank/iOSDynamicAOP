@@ -16,12 +16,12 @@ static NSArray<NSDictionary*>* aopMapping;
 @implementation NSObject (AOP)
 
 +(void)load{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //            [self runAOP];
-        });
-    });
+//        });
+//    });
 
 }
 
