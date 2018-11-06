@@ -15,14 +15,13 @@
 
 @implementation ViewController
 
-+ (void)load{
++(void)load{
     [[CUSAOPManager sharedInstance] runAOPWithResult:^(DAOPMapModel* mapModel, NSArray *resultArray) {
         NSLog(@"result:%@-%@\n%@",mapModel.className,mapModel.methodName,resultArray);
     }];
 }
-
-
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     [self abc:9 content:@"hellod" num:5];
     [self def:^(int i, NSString *a) {
@@ -36,8 +35,11 @@
         [self.navigationController pushViewController:vc animated:YES];
     });
 }
-
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
 - (void)viewDidAppear:(BOOL)animated{
+    NSLog(@"viewDidAppear");
     [super viewDidAppear:animated];
 }
 
@@ -54,6 +56,7 @@
 - (double)def:(void(^)(int i,NSString* a))is num:(int)num{
     NSLog(@"def %@ %d",NSStringFromSelector(_cmd),num);
     is(883,@"dddd");
+    [NSThread sleepForTimeInterval:1];
     return 0.2355657;
 }
 

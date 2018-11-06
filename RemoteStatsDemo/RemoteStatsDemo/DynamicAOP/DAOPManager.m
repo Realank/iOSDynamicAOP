@@ -75,8 +75,9 @@
                     [mappingArray addObject:mappingModel];
 
                 }
-                if (mappingArray.count) {
-                    NSData* cacheData = [DAOPMapModel convertMappingListToData:mappingArray];
+                NSArray* checkedMappingArr = [self mappingListBySafetyCheck:mappingArray];
+                if (checkedMappingArr.count) {
+                    NSData* cacheData = [DAOPMapModel convertMappingListToData:checkedMappingArr];
                     if (cacheData) {
                         [cacheData writeToFile:[weakSelf cacheFilePath] atomically:YES];
                     }
@@ -88,6 +89,38 @@
         NSLog(@"网络更新埋点映射：%@",jsonObject);
     }];
     [task resume];
+}
+
+- (NSArray*)mappingListBySafetyCheck:(NSArray<DAOPMapModel*>*)downloadedMappingList{
+    NSMutableArray* checkedMappingListArrM = [NSMutableArray arrayWithCapacity:downloadedMappingList.count];
+    for (int i = 0; i < downloadedMappingList.count; i++) {
+        DAOPMapModel* modelToCheck = downloadedMappingList[i];
+        if (![self canMonitorThisMapping:modelToCheck]) {
+            continue;
+        }
+        Class clazzToCheck = NSClassFromString(modelToCheck.className);
+        if (!clazzToCheck) {
+            continue;
+        }
+        BOOL canAdd = YES;
+        for (int j = 0; j < checkedMappingListArrM.count; j++) {
+            DAOPMapModel* preMapModel = checkedMappingListArrM[j];
+            
+            if ([modelToCheck.methodName isEqualToString:preMapModel.methodName]) {
+                Class preClazz = NSClassFromString(preMapModel.className);
+                if ([preClazz isSubclassOfClass:[clazzToCheck class]] || [clazzToCheck isSubclassOfClass:[preClazz class]]) {
+                    NSLog(@"禁止监听类树中的同一方法");
+                    canAdd = NO;
+                    break;
+                }
+            }
+            
+        }
+        if (canAdd) {
+            [checkedMappingListArrM addObject:modelToCheck];
+        }
+    }
+    return [checkedMappingListArrM copy];
 }
 
 - (void)readAOPMappingFromRom{
