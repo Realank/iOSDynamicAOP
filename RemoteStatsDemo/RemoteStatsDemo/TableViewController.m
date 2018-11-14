@@ -7,15 +7,11 @@
 //
 
 #import "TableViewController.h"
-#import <objc/runtime.h>
 @interface TableViewController ()
 
 @end
 
 @implementation TableViewController
-+(void)load{
-    ucar_aop_hookMethod([self class], @selector(tableView:cellForRowAtIndexPath:), @selector(custableView:cellForRowAtIndexPath:));
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,13 +19,6 @@
     
 }
 
-static void ucar_aop_hookMethod(Class aClass, SEL originMeth, SEL newMeth)
-{
-    Method origMethod = class_getInstanceMethod(aClass, originMeth);
-    Method newMethod = class_getInstanceMethod(aClass, newMeth);
-    
-    method_exchangeImplementations(origMethod, newMethod);
-}
 - (void)dealloc{
     NSLog(@"TableViewController dealloc");
 }

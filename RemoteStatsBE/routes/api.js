@@ -28,6 +28,17 @@ function keyWordsTest (string, allowBlank = false, addtionalChar = '') {
   return keywordsPattern.test(string)
 }
 
+function charContentTest (string, allowBlank = false, addtionalChar = '') {
+  if (!allowBlank) {
+    if (!string || string.length === 0) {
+      return false
+    }
+  }
+  const regExp = '^[\\w_' + addtionalChar + ']{0,50}$'
+  var keywordsPattern = new RegExp(regExp)
+
+  return keywordsPattern.test(string)
+}
 router.post('/upload', function (req, res, next) {
   putHeader(res)
 
@@ -38,7 +49,7 @@ router.post('/upload', function (req, res, next) {
   let mark = mapping.mark
   let collectDetail = mapping.collectDetail === true
 
-  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !keyWordsTest(mark, true)) {
+  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !charContentTest(mark, true)) {
     res.send({status: 'failed', msg: 'wrong input'})
     return
   }
@@ -48,7 +59,7 @@ router.post('/upload', function (req, res, next) {
     eventCode,
     mark,
     collectDetail,
-    filterList: mapping.filterList ? mapping.filterList.filter((item) => { return keyWordsTest(item.key) && keyWordsTest(item.content) }) : []
+    filterList: mapping.filterList ? mapping.filterList.filter((item) => { return keyWordsTest(item.key) && charContentTest(item.content) }) : []
   }
   console.log('类型判断通过')
   db.add(newMapping, (success) => {
