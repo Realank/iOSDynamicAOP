@@ -7,11 +7,17 @@ router.use(cors())
 /* GET users listing. */
 router.get('/list', function (req, res, next) {
   db.fetch((result) => {
-    let mapping = result
+    let mappingList = result.map((mapping) => {
+      mapping.filter = mapping.filter.map((filter) => {
+        filter.operation = 'equal'
+        return filter
+      })
+      return mapping
+    })
     putHeader(res)
     res.send(JSON.stringify({
       status: 'success',
-      monitor: mapping
+      monitor: mappingList
     }))
   })
 })
