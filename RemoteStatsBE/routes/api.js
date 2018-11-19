@@ -8,10 +8,12 @@ router.use(cors())
 router.get('/list', function (req, res, next) {
   db.fetch((result) => {
     let mappingList = result.map((mapping) => {
-      mapping.filter = mapping.filter.map((filter) => {
-        filter.operation = 'equal'
-        return filter
-      })
+      if (mapping.filterList) {
+        mapping.filterList = mapping.filterList.map((filter) => {
+          filter.operation = 'equal'
+          return filter
+        })
+      }
       return mapping
     })
     putHeader(res)
