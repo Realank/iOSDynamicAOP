@@ -9,11 +9,12 @@ router.get('/list', function (req, res, next) {
   db.fetch((result) => {
     let mappingList = result.map((mapping) => {
       if (mapping.filterList) {
-        mapping.filterList = mapping.filterList.map((filter) => {
+        let filterList = mapping.filterList.map((filter) => {
           filter = { ...filter, operation: 'equal' }
-          console.log('change fileter ' + filter)
+          console.log('change fileter ' + JSON.stringify(filter))
           return filter
         })
+        mapping.filterList = filterList
       }
       return mapping
     })
