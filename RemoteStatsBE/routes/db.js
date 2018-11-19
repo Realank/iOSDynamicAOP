@@ -7,7 +7,7 @@ let mappingSchema = new Schema({
   metaData: String,
   collectDetail: Boolean,
   filterList: [
-    { key: String, content: String }
+    { key: String, content: String, operation: String }
   ]
 })
 function fetch (cb) {
@@ -26,6 +26,9 @@ function fetch (cb) {
           console.log('mongo find error')
           cb([])
         } else {
+          docs.filterList.forEach((filter) => {
+            filter.operation = 'equal'
+          })
           cb(docs)
         }
       })
