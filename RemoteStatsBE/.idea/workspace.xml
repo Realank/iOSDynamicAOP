@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="84344514-9568-40e8-b498-bf72eaeda4fd" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RemoteStatsFE/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RemoteStatsFE/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RemoteStatsFE/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RemoteStatsFE/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RemoteStatsFE/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RemoteStatsFE/remote_stats_web/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../RemoteStatsFE/remote_stats_web/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RemoteStatsFE/remote_stats_web/src/Components/InputNewMapping.js" beforeDir="false" afterPath="$PROJECT_DIR$/../RemoteStatsFE/remote_stats_web/src/Components/InputNewMapping.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RemoteStatsFE/remote_stats_web/src/Components/MappingList.js" beforeDir="false" afterPath="$PROJECT_DIR$/../RemoteStatsFE/remote_stats_web/src/Components/MappingList.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -43,7 +34,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="418">
@@ -70,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="users.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="users.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="38">
+              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -313,12 +304,12 @@
       <workItem from="1542270109834" duration="2123000" />
       <workItem from="1542331743200" duration="426000" />
       <workItem from="1542351725456" duration="994000" />
-      <workItem from="1542590629996" duration="1154000" />
+      <workItem from="1542590629996" duration="1835000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86016000" />
+    <option name="totallyTimeSpent" value="86697000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2560" height="1417" extended-state="6" />
@@ -657,13 +648,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/db.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
@@ -673,8 +657,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="38">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
         </state>
       </provider>
     </entry>

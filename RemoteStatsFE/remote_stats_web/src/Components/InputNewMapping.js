@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import FilterList from './FilterList'
 
 class InputNewMapping extends Component {
@@ -7,7 +7,7 @@ class InputNewMapping extends Component {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
-    this.props.inputTF({name, value})
+    this.props.inputTF({ name, value })
   }
 
   reactInput (nameStr, placeholder) {
@@ -32,14 +32,14 @@ class InputNewMapping extends Component {
             {this.reactInput('className', 'class')}
             {this.reactInput('methodName', 'method')}
           </div>
-          <div className='row' style={{ padding: '2px 0px 0px', margin: '0px 10px', backgroundColor: 'white'}} />
+          <div className='row' style={{ padding: '2px 0px 0px', margin: '0px 10px', backgroundColor: 'white' }} />
           <div className='row'>
             <div className='sameWidth'>
               <h4 className='desc'>Event code:</h4>
               {this.reactInput('eventCode', 'Event code')}
             </div>
             <div className='sameWidth'>
-              <h4 className='desc'>Mark:</h4>
+              <h4 className='desc'>Meta data:</h4>
               {this.reactInput('metaData', 'Meta data')}
             </div>
             <div className='sameWidth'>
