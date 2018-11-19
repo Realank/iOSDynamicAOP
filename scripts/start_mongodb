@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "prepare to start mongodb in background"
+
+nohup mongod --dbpath ../MongoDB > mongodblog.file 2>&1 &
+
+echo "mongodb now started"
