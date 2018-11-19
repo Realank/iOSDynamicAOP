@@ -11,6 +11,7 @@ router.get('/list', function (req, res, next) {
       if (mapping.filterList) {
         mapping.filterList = mapping.filterList.map((filter) => {
           filter.operation = 'equal'
+          console.log('change fileter ' + filter)
           return filter
         })
       }
