@@ -50,7 +50,7 @@ router.post('/upload', function (req, res, next) {
   let metaData = mapping.metaData
   let collectDetail = mapping.collectDetail === true
 
-  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !charContentTest(metaData, true, '\\{\\}\\[\\]"\'\\s:')) {
+  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !charContentTest(metaData, true, '\\{\\}\\[\\]"\'\\s:,./\\+=-%@')) {
     res.send({ status: 'failed', msg: 'wrong input' })
     return
   }
