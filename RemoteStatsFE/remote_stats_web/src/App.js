@@ -102,7 +102,6 @@ const upload = (newMapping) => {
     return
   }
 
-
   const mapping = {
     className: newMapping.className,
     methodName: newMapping.methodName,
@@ -144,7 +143,7 @@ const remove = (existMapping) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json;charset=UTF-8'
     },
-    body: JSON.stringify({className: existMapping.className, methodName: existMapping.methodName})
+    body: JSON.stringify({ className: existMapping.className, methodName: existMapping.methodName })
   }).then((res) => {
     if (res.status !== 200) {
       // error
@@ -166,20 +165,20 @@ const validString = (string) => {
 const reducer = (state = persistedState, action) => {
   console.log('action:' + JSON.stringify(action))
   let newState = Object.assign({}, state)
-  let newMapping = {...newState.newMapping}
+  let newMapping = { ...newState.newMapping }
   switch (action.type) {
     case 'AddNew':
       upload(newState.newMapping)
       return newState
     case 'AddFilter':
       if (keyWordsTest(newState.newMapping.inputing_filter_key) && charContentTest(newState.newMapping.inputing_filter_content)) {
-        let newMapping = {...newState.newMapping}
+        let newMapping = { ...newState.newMapping }
         let oldFilterList = newMapping.filterList
         if (!oldFilterList) {
           oldFilterList = []
         }
         newMapping.filterList = oldFilterList.map((item) => item)
-        newMapping.filterList.push({key: newState.newMapping.inputing_filter_key, content: newState.newMapping.inputing_filter_content})
+        newMapping.filterList.push({ key: newState.newMapping.inputing_filter_key, content: newState.newMapping.inputing_filter_content, operation: 'equal' })
         newMapping.inputing_filter_key = ''
         newMapping.inputing_filter_content = ''
         newState.newMapping = newMapping

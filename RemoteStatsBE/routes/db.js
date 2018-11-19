@@ -26,9 +26,6 @@ function fetch (cb) {
           console.log('mongo find error')
           cb([])
         } else {
-          docs.filterList.forEach((filter) => {
-            filter.operation = 'equal'
-          })
           cb(docs)
         }
       })
