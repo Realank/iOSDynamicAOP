@@ -45,7 +45,7 @@
                 continue;
             }
             [DAOPProbe runMappingOfClass:mappingModel.className andMethod:mappingModel.methodName showResult:mappingModel.collectDetail withResult:^(NSArray *resultArray) {
-                if (resultBlock) {  \
+                if (resultBlock) {  
                     resultBlock(mappingModel,resultArray);
                 }
             }];
