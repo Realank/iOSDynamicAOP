@@ -10,10 +10,7 @@ router.get('/list', function (req, res, next) {
     let mappingList = result.map((mapping) => {
       if (mapping.filterList) {
         let filterList = mapping.filterList.map((filter) => {
-          console.log('before filter ' + JSON.stringify(filter))
-          filter['operation'] = 'equal'
-          console.log('change filter ' + JSON.stringify(filter))
-          return filter
+          return { key: filter.key, content: filter.content, operation: 'equal' }
         })
         mapping.filterList = filterList
       }
