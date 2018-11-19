@@ -45,7 +45,7 @@ class MappingItem extends Component {
           </div>
           <div className='row'>
             <div className='sameWidth'><h4 className='desc'>Event code:</h4><h4 className='content'>{mappingItem.eventCode}</h4></div>
-            <div className='sameWidth'><h4 className='desc'>Mark:</h4><h4 className='content'>{mappingItem.mark}</h4></div>
+            <div className='sameWidth'><h4 className='desc'>Meta data:</h4><h4 className='content'>{mappingItem.metadata}</h4></div>
             <div className='sameWidth'><h4 className='desc'>Collect detail:</h4><input type='checkbox' disabled checked={mappingItem.collectDetail} /></div>
 
           </div>

@@ -93,7 +93,7 @@ BOOL contentTest(NSString* string){
         _className = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"className"];
         _methodName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"methodName"];
         _eventCode = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"eventCode"];
-        _mark = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"mark"];
+        _metaData = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"metaData"];
         _collectDetail = [aDecoder decodeBoolForKey:@"collectDetail"];
         NSArray* filterListArr = [aDecoder decodeObjectForKey:@"filterList"];
         _filterList = [filterListArr copy];
@@ -105,7 +105,7 @@ BOOL contentTest(NSString* string){
     [aCoder encodeObject:_className forKey:@"className"];
     [aCoder encodeObject:_methodName forKey:@"methodName"];
     [aCoder encodeObject:_eventCode forKey:@"eventCode"];
-    [aCoder encodeObject:_mark forKey:@"mark"];
+    [aCoder encodeObject:_metaData forKey:@"metaData"];
     [aCoder encodeBool:_collectDetail forKey:@"collectDetail"];
     [aCoder encodeObject:_filterList forKey:@"filterList"];
 }
@@ -127,7 +127,7 @@ BOOL contentTest(NSString* string){
     NSString* className = dict[@"className"];
     NSString* methodName = dict[@"methodName"];
     NSString* eventCode = dict[@"eventCode"];
-    NSString* mark = dict[@"mark"];
+    NSString* metaData = dict[@"metaData"];
     BOOL collectDetail = [dict[@"collectDetail"] boolValue];
     NSMutableArray* array = [NSMutableArray arrayWithCapacity:10];
     NSArray* filterListArray = dict[@"filterList"];
@@ -139,14 +139,14 @@ BOOL contentTest(NSString* string){
             }
         }
     }
-    if (!keywordsTest(className) || !methodTest(methodName) || !keywordsTest(eventCode) || !contentTest(mark)) {
+    if (!keywordsTest(className) || !methodTest(methodName) || !keywordsTest(eventCode)) {
         return nil;
     }
     DAOPMapModel* model = [[DAOPMapModel alloc] init];
     model.className = className;
     model.methodName = methodName;
     model.eventCode = eventCode;
-    model.mark = mark;
+    model.metaData = metaData;
     model.collectDetail = collectDetail;
     model.filterList = [array copy];
     return model;

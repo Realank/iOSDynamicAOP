@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString* className;
 @property (nonatomic, copy) NSString* methodName;
 @property (nonatomic, copy) NSString* eventCode;
-@property (nonatomic, copy) NSString* mark;
+@property (nonatomic, copy) NSString* metaData;
 @property (nonatomic, assign) BOOL collectDetail;
 @property (nonatomic, strong) NSArray<DAOPMapFilterModel*>* filterList;
 

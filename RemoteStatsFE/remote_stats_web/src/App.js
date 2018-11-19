@@ -102,16 +102,12 @@ const upload = (newMapping) => {
     return
   }
 
-  if (!charContentTest(newMapping.mark, true)) {
-    alert('Error: wrong mark')
-    return
-  }
 
   const mapping = {
     className: newMapping.className,
     methodName: newMapping.methodName,
     eventCode: newMapping.eventCode,
-    mark: newMapping.mark,
+    metaData: newMapping.metaData,
     collectDetail: newMapping.collectDetail,
     filterList: newMapping.filterList
   }

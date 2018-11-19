@@ -40,7 +40,7 @@ class InputNewMapping extends Component {
             </div>
             <div className='sameWidth'>
               <h4 className='desc'>Mark:</h4>
-              {this.reactInput('mark', 'Mark')}
+              {this.reactInput('metaData', 'Meta data')}
             </div>
             <div className='sameWidth'>
               <h4 className='desc'>Collect detail:</h4>

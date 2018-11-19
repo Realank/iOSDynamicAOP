@@ -39,6 +39,7 @@ function charContentTest (string, allowBlank = false, addtionalChar = '') {
 
   return keywordsPattern.test(string)
 }
+
 router.post('/upload', function (req, res, next) {
   putHeader(res)
 
@@ -46,27 +47,27 @@ router.post('/upload', function (req, res, next) {
   let className = mapping.className
   let methodName = mapping.methodName
   let eventCode = mapping.eventCode
-  let mark = mapping.mark
+  let metaData = mapping.metaData
   let collectDetail = mapping.collectDetail === true
 
-  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !charContentTest(mark, true)) {
-    res.send({status: 'failed', msg: 'wrong input'})
+  if (!keyWordsTest(className) || !keyWordsTest(methodName, false, ':') || !keyWordsTest(eventCode) || !charContentTest(metaData, true, '{}[]"\'\\s')) {
+    res.send({ status: 'failed', msg: 'wrong input' })
     return
   }
   let newMapping = {
     className,
     methodName,
     eventCode,
-    mark,
+    metaData,
     collectDetail,
     filterList: mapping.filterList ? mapping.filterList.filter((item) => { return keyWordsTest(item.key) && charContentTest(item.content) }) : []
   }
   console.log('类型判断通过')
   db.add(newMapping, (success) => {
     if (success) {
-      res.send({status: 'success'})
+      res.send({ status: 'success' })
     } else {
-      res.send({status: 'failed', msg: 'DB error'})
+      res.send({ status: 'failed', msg: 'DB error' })
     }
   })
 })
@@ -78,10 +79,10 @@ router.post('/remove', function (req, res, next) {
   let methodName = mapping.methodName
   if (className.length > 0 && methodName.length > 0) {
     console.log('类型判读通过')
-    db.remove({className, methodName}, (success) => {
+    db.remove({ className, methodName }, (success) => {
       console.log('remove success in api')
       putHeader(res)
-      res.send({status: success ? 'success' : 'failed'})
+      res.send({ status: success ? 'success' : 'failed' })
     })
   }
 })

@@ -4,10 +4,10 @@ let mappingSchema = new Schema({
   className: String,
   methodName: String,
   eventCode: String,
-  mark: String,
+  metaData: String,
   collectDetail: Boolean,
   filterList: [
-    {key: String, content: String}
+    { key: String, content: String }
   ]
 })
 function fetch (cb) {
@@ -64,11 +64,11 @@ function remove (existMapping, cb) {
     } else {
       console.log('连接成功')
       let MappingModel = mongoose.model('MappingModel', mappingSchema)
-      MappingModel.findOneAndDelete({className: existMapping.className, methodName: existMapping.methodName}, (err, doc) => {
+      MappingModel.findOneAndDelete({ className: existMapping.className, methodName: existMapping.methodName }, (err, doc) => {
         cb(!err)
       })
     }
   })
 }
 
-module.exports = {fetch, add, remove}
+module.exports = { fetch, add, remove }

@@ -12,12 +12,12 @@ router.get('/', function (req, res, next) {
       console.log(body)
       var mapping = JSON.parse(body)
       if (mapping.status === 'success') {
-        res.render('index', {result: mapping.monitor, host: host})
+        res.render('index', { result: mapping.monitor, host: host })
       } else {
         res.render('index', { error: body })
       }
     } else {
-      res.render('index', { error: 'can\'s request'})
+      res.render('index', { error: 'can\'s request' })
     }
   }
   )
